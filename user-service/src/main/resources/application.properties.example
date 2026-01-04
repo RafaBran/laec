@@ -1,0 +1,20 @@
+spring.application.name=user-service
+server.port=8082
+
+# PostgreSQL Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_database_name
+spring.datasource.username=your_database_username
+spring.datasource.password=your_database_password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA/Hibernate Configuration
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# JWT Configuration (for token validation)
+jwt.secret=your-super-secret-jwt-key-change-this-in-production-min-256-bits
+
+# Eureka Client Configuration (Desabilitado por enquanto)
+eureka.client.enabled=false

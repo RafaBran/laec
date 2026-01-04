@@ -1,0 +1,54 @@
+# Node.js / Angular
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Maven / Java
+target/
+.mvn/
+.m2/
+mvnw
+mvnw.cmd
+*.jar
+*.war
+*.class
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Application properties com dados sensíveis
+**/application.properties
+!**/application.properties.example
+
+# Build outputs
+build/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local

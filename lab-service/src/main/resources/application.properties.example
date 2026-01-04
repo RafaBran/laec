@@ -1,0 +1,23 @@
+spring.application.name=lab-service
+server.port=${SERVER_PORT:8083}
+
+# PostgreSQL Database Configuration
+spring.datasource.url=jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:laec}
+spring.datasource.username=${DB_USERNAME:postgres}
+spring.datasource.password=${DB_PASSWORD:your_password_here}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA/Hibernate Configuration
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=${JPA_SHOW_SQL:true}
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# JWT Configuration (for token validation)
+jwt.secret=${JWT_SECRET:your-secret-key-here}
+
+# Eureka Client Configuration (Desabilitado por enquanto)
+eureka.client.enabled=false
+
+# Spring Cloud Compatibility Verifier
+spring.cloud.compatibility-verifier.enabled=false
