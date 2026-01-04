@@ -1,0 +1,44 @@
+<div class="equipe-page">
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="pi pi-users"></i>
+      Nossa Equipe
+    </h1>
+    <p class="page-subtitle">
+      Conheça os profissionais e monitores responsáveis pelo Laboratório de Análise Experimental do Comportamento
+    </p>
+  </div>
+
+  <div class="membros-container">
+    @for (membro of membros; track membro.id) {
+      <div class="membro-card-wrapper">
+        <div class="custom-card membro-card">
+          <div class="card-foto-wrapper">
+            <img 
+              [src]="membro.foto" 
+              [alt]="'Foto de ' + membro.nome"
+              class="card-foto" />
+          </div>
+          
+          <div class="card-conteudo">
+            <div class="info-header">
+              <h3 class="membro-nome">{{ membro.nome }}</h3>
+              <p class="membro-cargo">{{ membro.cargo }}</p>
+              @if (membro.periodo) {
+                <p class="membro-periodo">{{ membro.periodo }}</p>
+              }
+            </div>
+            
+            <button 
+              pButton
+              label="Entrar em contato" 
+              icon="pi pi-send"
+              class="botao-contato"
+              (click)="enviarEmail(membro.email)">
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

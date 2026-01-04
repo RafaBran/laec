@@ -1,0 +1,351 @@
+<div class="gerenciar-aulas-page">
+  <div class="page-header">
+    <h1>Registrar Uso do Laboratório</h1>
+    <p class="subtitle">
+      Registre aulas práticas e calcule prioridades automaticamente
+    </p>
+  </div>
+
+  <!-- Barra de Progresso -->
+  <div class="progress-bar" *ngIf="etapaAtual !== 'selecao'">
+    <div class="progress-fill" [style.width.%]="progressoEtapa"></div>
+  </div>
+
+  <!-- Mensagens -->
+  <p-message *ngIf="mensagemSucesso" severity="success" [text]="mensagemSucesso"></p-message>
+  <p-message *ngIf="mensagemErro" severity="error" [text]="mensagemErro"></p-message>
+
+  <!-- ETAPA 1: SELEÇÃO -->
+  <div class="etapa-selecao" *ngIf="etapaAtual === 'selecao'">
+    <div class="selecao-grid">
+      <!-- Ano -->
+      <div class="selecao-card">
+        <h3><i class="pi pi-calendar"></i> Ano Letivo</h3>
+        <p-select 
+          [(ngModel)]="anoSelecionado"
+          [options]="anos"
+          optionLabel="descricao"
+          placeholder="Selecione o ano"
+          (onChange)="onAnoChange()"
+          styleClass="w-full">
+        </p-select>
+      </div>
+
+      <!-- Semestre -->
+      <div class="selecao-card" *ngIf="anoSelecionado">
+        <h3><i class="pi pi-bookmark"></i> Semestre</h3>
+        <p-select 
+          [(ngModel)]="semestreSelecionado"
+          [options]="semestres"
+          optionLabel="descricao"
+          placeholder="Selecione o semestre"
+          (onChange)="onSemestreChange()"
+          styleClass="w-full">
+        </p-select>
+      </div>
+
+      <!-- Turma -->
+      <div class="selecao-card" *ngIf="semestreSelecionado">
+        <h3><i class="pi pi-users"></i> Turma</h3>
+        <p-select 
+          [(ngModel)]="turmaSelecionada"
+          [options]="turmas"
+          optionLabel="nome"
+          placeholder="Selecione a turma"
+          (onChange)="onTurmaChange()"
+          styleClass="w-full">
+        </p-select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: DADOS DA AULA -->
+  <div class="etapa-aula" *ngIf="etapaAtual === 'aula'">
+    <div class="form-aula">
+      <h2>Dados da Aula Prática</h2>
+      
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Número da Aula</label>
+          <input 
+            pInputText 
+            type="number" 
+            [(ngModel)]="aulaAtual.numero_aula"
+            placeholder="Ex: 1"
+            readonly>
+        </div>
+
+        <div class="form-field">
+          <label>Data da Aula *</label>
+          <p-datepicker 
+            [(ngModel)]="aulaAtual.data_aula"
+            dateFormat="dd/mm/yy"
+            placeholder="Selecione a data"
+            styleClass="w-full">
+          </p-datepicker>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Tema da Aula *</label>
+        <input 
+          pInputText 
+          [(ngModel)]="aulaAtual.tema"
+          placeholder="Ex: Introdução ao Condicionamento Operante"
+          styleClass="w-full">
+      </div>
+
+      <div class="form-field">
+        <label>Procedimento *</label>
+        <p-select 
+          [(ngModel)]="aulaAtual.procedimento_id"
+          [options]="procedimentos"
+          optionLabel="titulo"
+          optionValue="id"
+          placeholder="Selecione o procedimento"
+          styleClass="w-full">
+        </p-select>
+      </div>
+
+      <div class="form-field">
+        <label>Observações</label>
+        <textarea 
+          pTextarea 
+          [(ngModel)]="aulaAtual.observacoes"
+          rows="3"
+          placeholder="Observações gerais sobre a aula..."
+          styleClass="w-full">
+        </textarea>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          pButton 
+          label="Voltar" 
+          icon="pi pi-arrow-left"
+          (click)="etapaAtual = 'selecao'"
+          styleClass="p-button-secondary p-button-outlined">
+        </button>
+        <button 
+          pButton 
+          label="Próximo: Selecionar Grupos" 
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          (click)="avancarParaGrupos()">
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3: SELEÇÃO DE GRUPOS -->
+  <div class="etapa-grupos" *ngIf="etapaAtual === 'grupos'">
+    <h2>Selecionar Grupos e Definir Ordem</h2>
+    
+    <!-- Sugestão de Prioridade -->
+    <div class="sugestao-card" *ngIf="mostrarSugestao && prioridadesSugeridas.length > 0">
+      <div class="sugestao-header">
+        <h3><i class="pi pi-lightbulb"></i> Sugestão de Ordem (Baseada na Aula Anterior)</h3>
+        <div class="sugestao-actions">
+          <button pButton label="Aplicar Sugestão" icon="pi pi-check" (click)="aplicarSugestao()"></button>
+          <button pButton label="Ignorar" icon="pi pi-times" (click)="ignorarSugestao()" styleClass="p-button-outlined"></button>
+        </div>
+      </div>
+      <div class="sugestao-lista">
+        <div class="sugestao-item" *ngFor="let sug of prioridadesSugeridas">
+          <span class="ordem-badge">{{ sug.ordem_sugerida }}º</span>
+          <span class="grupo-nome">{{ sug.grupo_nome }}</span>
+          <span class="info-texto" *ngIf="sug.ultima_ordem">
+            (Última vez: {{ sug.ultima_ordem }}º)
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Grupos -->
+    <div class="grupos-lista">
+      <div 
+        class="grupo-item" 
+        *ngFor="let grupo of grupos"
+        [class.selecionado]="grupo.selecionado">
+        
+        <div class="grupo-checkbox">
+          <input 
+            type="checkbox" 
+            [checked]="grupo.selecionado"
+            (change)="toggleGrupo(grupo)"
+            [id]="'grupo-' + grupo.id">
+          <label [for]="'grupo-' + grupo.id">
+            <strong>{{ grupo.nome }}</strong>
+          </label>
+        </div>
+
+        <div class="grupo-ordem" *ngIf="grupo.selecionado">
+          <button 
+            pButton 
+            icon="pi pi-arrow-up"
+            (click)="moverGrupoCima(grupo)"
+            [disabled]="grupo.ordem === 1"
+            styleClass="p-button-text">
+          </button>
+          <span class="ordem-numero">{{ grupo.ordem }}º</span>
+          <button 
+            pButton 
+            icon="pi pi-arrow-down"
+            (click)="moverGrupoBaixo(grupo)"
+            styleClass="p-button-text">
+          </button>
+        </div>
+
+        <div class="grupo-horarios" *ngIf="grupo.selecionado">
+          <input 
+            type="time" 
+            [(ngModel)]="grupo.horario_inicio"
+            placeholder="Início">
+          <span>até</span>
+          <input 
+            type="time" 
+            [(ngModel)]="grupo.horario_fim"
+            placeholder="Fim">
+        </div>
+
+        <button 
+          pButton 
+          icon="pi pi-pencil"
+          (click)="editarGrupo(grupo)"
+          *ngIf="grupo.selecionado"
+          styleClass="p-button-text p-button-secondary">
+        </button>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        pButton 
+        label="Voltar" 
+        icon="pi pi-arrow-left"
+        (click)="voltarParaAula()"
+        styleClass="p-button-secondary p-button-outlined">
+      </button>
+      <button 
+        pButton 
+        label="Próximo: Confirmar" 
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        (click)="avancarParaConfirmacao()"
+        [disabled]="gruposSelecionados.length === 0">
+      </button>
+    </div>
+  </div>
+
+  <!-- ETAPA 4: CONFIRMAÇÃO -->
+  <div class="etapa-confirmacao" *ngIf="etapaAtual === 'confirmacao'">
+    <h2>Confirmar Registro</h2>
+    
+    <div class="resumo-card">
+      <h3>Resumo da Aula</h3>
+      <div class="resumo-item">
+        <strong>Turma:</strong> {{ turmaSelecionada?.nome }}
+      </div>
+      <div class="resumo-item">
+        <strong>Aula Nº:</strong> {{ aulaAtual.numero_aula }}
+      </div>
+      <div class="resumo-item">
+        <strong>Data:</strong> {{ aulaAtual.data_aula | date:'dd/MM/yyyy' }}
+      </div>
+      <div class="resumo-item">
+        <strong>Tema:</strong> {{ aulaAtual.tema }}
+      </div>
+    </div>
+
+    <div class="resumo-card">
+      <h3>Ordem de Execução dos Grupos</h3>
+      <div class="timeline-resumo">
+        <div class="timeline-item-resumo" *ngFor="let grupo of gruposSelecionados">
+          <div class="ordem-badge-lg">{{ grupo.ordem }}</div>
+          <div class="grupo-info-resumo">
+            <strong>{{ grupo.nome }}</strong>
+            <span *ngIf="grupo.horario_inicio">
+              {{ grupo.horario_inicio }} - {{ grupo.horario_fim }}
+            </span>
+            <p *ngIf="grupo.observacoes" class="obs-texto">
+              {{ grupo.observacoes }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alerta-prioridade">
+      <i class="pi pi-info-circle"></i>
+      <p>
+        As prioridades para a próxima aula serão calculadas automaticamente. 
+        Grupos que fizeram primeiro desta vez farão por último na próxima.
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        pButton 
+        label="Voltar" 
+        icon="pi pi-arrow-left"
+        (click)="voltarParaGrupos()"
+        styleClass="p-button-secondary p-button-outlined"
+        [disabled]="carregando">
+      </button>
+      <button 
+        pButton 
+        label="Salvar Registro" 
+        icon="pi pi-check"
+        (click)="salvarRegistro()"
+        [disabled]="carregando">
+        <i *ngIf="carregando" class="pi pi-spin pi-spinner"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dialog de Edição de Grupo -->
+  <p-dialog 
+    [(visible)]="dialogRegistroVisible"
+    header="Detalhes do Grupo"
+    [modal]="true"
+    [style]="{width: '500px'}">
+    
+    <div class="dialog-content" *ngIf="grupoSendoEditado">
+      <div class="form-field">
+        <label>Horário de Início</label>
+        <input type="time" [(ngModel)]="grupoSendoEditado.horario_inicio" class="w-full">
+      </div>
+      
+      <div class="form-field">
+        <label>Horário de Término</label>
+        <input type="time" [(ngModel)]="grupoSendoEditado.horario_fim" class="w-full">
+      </div>
+      
+      <div class="form-field">
+        <label>Observações</label>
+        <textarea 
+          pTextarea 
+          [(ngModel)]="grupoSendoEditado.observacoes"
+          rows="4"
+          placeholder="Observações sobre este grupo..."
+          class="w-full">
+        </textarea>
+      </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <button 
+        pButton 
+        label="Cancelar" 
+        (click)="dialogRegistroVisible = false"
+        styleClass="p-button-secondary p-button-outlined">
+      </button>
+      <button 
+        pButton 
+        label="Salvar" 
+        icon="pi pi-check"
+        (click)="salvarEdicaoGrupo()">
+      </button>
+    </ng-template>
+  </p-dialog>
+</div>

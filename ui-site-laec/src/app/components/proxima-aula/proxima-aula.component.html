@@ -1,0 +1,67 @@
+<div class="proxima-aula-card">
+  <div class="card-header">
+    <div class="header-icon">
+      <i class="pi pi-clock"></i>
+    </div>
+    <div class="header-info">
+      <h3>Próxima Aula</h3>
+      <p>Grupos organizados por prioridade para a próxima sessão</p>
+    </div>
+  </div>
+
+  @if (prioridade) {
+    <div class="turnos-container">
+      <!-- Turno 1 -->
+      <div class="turno-section">
+        <div class="turno-header">
+          <span class="turno-badge turno-1">1º Turno</span>
+          <span class="turno-count">{{ turno1.length }} grupos</span>
+        </div>
+        <div class="grupos-grid">
+          @for (grupo of turno1; track grupo.grupoId) {
+            <div class="grupo-badge" [attr.data-ordem]="grupo.ordemSugerida">
+              <span class="grupo-numero">Grupo {{ grupo.numeroGrupo }}</span>
+              <div class="grupo-stats">
+                <span class="stat-turno primeiro">1º: {{ getTotalPrimeiroTurno(grupo) }}x</span>
+                <span class="stat-turno segundo">2º: {{ getTotalSegundoTurno(grupo) }}x</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Turno 2 -->
+      @if (turno2.length > 0) {
+        <div class="turno-section">
+          <div class="turno-header">
+            <span class="turno-badge turno-2">2º Turno</span>
+            <span class="turno-count">{{ turno2.length }} grupos</span>
+          </div>
+          <div class="grupos-grid">
+            @for (grupo of turno2; track grupo.grupoId) {
+              <div class="grupo-badge" [attr.data-ordem]="grupo.ordemSugerida">
+                <span class="grupo-numero">Grupo {{ grupo.numeroGrupo }}</span>
+                <div class="grupo-stats">
+                  <span class="stat-turno primeiro">1º: {{ getTotalPrimeiroTurno(grupo) }}x</span>
+                  <span class="stat-turno segundo">2º: {{ getTotalSegundoTurno(grupo) }}x</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (prioridade.explicacao) {
+      <div class="explicacao">
+        <i class="pi pi-info-circle"></i>
+        <span>{{ prioridade.explicacao }}</span>
+      </div>
+    }
+  } @else {
+    <div class="empty-state">
+      <i class="pi pi-inbox"></i>
+      <p>Nenhum grupo cadastrado para esta turma</p>
+    </div>
+  }
+</div>

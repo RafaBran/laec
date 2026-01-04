@@ -1,0 +1,270 @@
+.equipe-page {
+  animation: fadeIn 0.5s ease-out;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  
+  .page-header {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    
+    .page-title {
+      color: var(--primary-dark);
+      font-size: clamp(2rem, 4.5vw, 2.75rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      
+      i {
+        color: var(--accent-color);
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+      }
+    }
+    
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  }
+  
+  .membros-container {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 900px;
+    margin: 0 auto;
+    
+    .membro-card-wrapper {
+      animation: slideInUp 0.5s ease-out backwards;
+      
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{$i * 0.1}s;
+        }
+      }
+      
+      .custom-card {
+        display: flex;
+        flex-direction: row;
+        background: white;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        min-height: 200px;
+        
+        &:hover {
+          border-color: var(--primary-color);
+          transform: translateY(-4px);
+          box-shadow: 0 12px 28px rgba(114, 47, 55, 0.18);
+          
+          .card-foto-wrapper {
+            .card-foto {
+              transform: scale(1.05);
+            }
+          }
+        }
+        
+        .card-foto-wrapper {
+          position: relative;
+          width: 200px;
+          min-width: 200px;
+          overflow: hidden;
+          background: var(--primary-gradient);
+          
+          .card-foto {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transition: transform 0.4s ease;
+          }
+        }
+        
+        .card-conteudo {
+          flex: 1;
+          padding: 2rem 2.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          
+          .info-header {
+            .membro-nome {
+              color: var(--primary-dark);
+              font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+              margin: 0 0 0.5rem 0;
+              font-weight: 700;
+            }
+            
+            .membro-cargo {
+              color: var(--primary-color);
+              font-size: clamp(1rem, 2vw, 1.15rem);
+              font-weight: 600;
+              margin: 0 0 0.4rem 0;
+            }
+            
+            .membro-periodo {
+              color: var(--text-secondary);
+              font-size: clamp(0.9rem, 1.8vw, 1rem);
+              font-style: italic;
+              margin: 0;
+            }
+          }
+          
+          .botao-contato {
+            align-self: flex-start;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            
+            &:hover {
+              background: var(--primary-dark);
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(114, 47, 55, 0.25);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Desktop Grande */
+@media (min-width: 1440px) {
+  .equipe-page {
+    .membros-container {
+      max-width: 1200px;
+      
+      .custom-card {
+        .card-foto-wrapper {
+          width: 220px;
+          min-width: 220px;
+        }
+        
+        .card-conteudo {
+          padding: 2.25rem 3rem;
+        }
+      }
+    }
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .equipe-page {
+    .membros-container {
+      .custom-card {
+        .card-conteudo {
+          padding: 2rem 2.25rem;
+        }
+      }
+    }
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .equipe-page {
+    .membros-container {
+      max-width: 750px;
+      
+      .custom-card {
+        .card-foto-wrapper {
+          width: 180px;
+          min-width: 180px;
+        }
+        
+        .card-conteudo {
+          padding: 1.75rem 2rem;
+        }
+      }
+    }
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .equipe-page {
+    padding: 0 clamp(0.75rem, 2vw, 1rem);
+    
+    .page-header {
+      margin-bottom: 2rem;
+      
+      .page-title {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+    
+    .membros-container {
+      gap: 2rem;
+      
+      .custom-card {
+        flex-direction: column;
+        
+        .card-foto-wrapper {
+          width: 100%;
+          min-width: 100%;
+          height: 280px;
+        }
+        
+        .card-conteudo {
+          padding: 1.5rem 1.75rem;
+        }
+      }
+    }
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 480px) {
+  .equipe-page {
+    padding: 0 0.75rem;
+    
+    .page-header {
+      margin-bottom: 1.5rem;
+    }
+    
+    .membros-container {
+      gap: 1.5rem;
+      
+      .custom-card {
+        .card-foto-wrapper {
+          height: 240px;
+        }
+        
+        .card-conteudo {
+          padding: 1.25rem 1.5rem;
+          
+          .botao-contato {
+            width: 100%;
+            margin-top: 1rem;
+          }
+        }
+      }
+    }
+  }
+}

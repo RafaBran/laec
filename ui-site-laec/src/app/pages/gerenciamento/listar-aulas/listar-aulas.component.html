@@ -1,0 +1,101 @@
+<div class="listar-aulas-page">
+  <div class="page-header">
+    <button 
+      pButton 
+      icon="pi pi-arrow-left" 
+      class="p-button-text p-button-secondary back-button"
+      (click)="voltar()">
+    </button>
+    
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="pi pi-list"></i>
+        Aulas Cadastradas
+      </h1>
+      <p class="page-subtitle">
+        Visualize todas as aulas práticas registradas no laboratório
+      </p>
+    </div>
+  </div>
+
+  @if (aulas.length === 0) {
+    <div class="empty-state">
+      <div class="empty-card">
+        <i class="pi pi-inbox empty-icon"></i>
+        <h2>Nenhuma aula cadastrada</h2>
+        <p>Comece cadastrando a primeira aula no laboratório</p>
+        <button 
+          pButton 
+          label="Cadastrar Aula" 
+          icon="pi pi-plus"
+          class="p-button-lg"
+          routerLink="/gerenciamento/cadastrar-aulas">
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (aulas.length > 0) {
+    <div class="aulas-container">
+      @for (aula of aulas; track aula.id) {
+        <div class="aula-card-wrapper">
+          <div class="custom-card aula-card">
+            <div class="card-header">
+              <div class="header-icon">
+                <i class="pi pi-book"></i>
+              </div>
+              <div class="header-info">
+                <h3 class="disciplina">{{ aula.disciplina }}</h3>
+                <p class="professor">
+                  <i class="pi pi-user"></i>
+                  {{ aula.professor }}
+                </p>
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <div class="info-row">
+                <div class="info-item">
+                  <i class="pi pi-calendar"></i>
+                  <span>{{ formatarData(aula.data) }}</span>
+                </div>
+                <div class="info-item">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ aula.horario }}</span>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="info-item">
+                  <i class="pi pi-users"></i>
+                  <span>Turma: {{ aula.turma }}</span>
+                </div>
+                <div class="info-item">
+                  <i class="pi pi-hashtag"></i>
+                  <span>{{ aula.numeroAlunos }} alunos</span>
+                </div>
+              </div>
+
+              @if (aula.observacoes) {
+                <div class="observacoes">
+                  <i class="pi pi-info-circle"></i>
+                  <span>{{ aula.observacoes }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="card-footer">
+              <button 
+                pButton 
+                label="Ver Detalhes" 
+                icon="pi pi-eye"
+                class="p-button-outlined p-button-sm"
+                (click)="editarAula(aula.id!)">
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

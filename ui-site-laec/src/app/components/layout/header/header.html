@@ -1,0 +1,30 @@
+<header class="header">
+  <div class="header-container">
+    <div class="logo-section">
+      <h1 class="site-title">LAEC UNIALFA</h1>
+      <p class="site-subtitle">Laboratório de Análise Experimental do Comportamento</p>
+    </div>
+    
+    <p-menubar [model]="menuItems" styleClass="custom-menubar">
+      <ng-template pTemplate="end">
+        @if (isAuthenticated) {
+          <p-button 
+            icon="pi pi-sign-out" 
+            label="Logout" 
+            [text]="true"
+            (onClick)="onLogout()"
+            styleClass="login-button"
+          />
+        } @else {
+          <p-button 
+            icon="pi pi-sign-in" 
+            label="Login" 
+            [text]="true"
+            (onClick)="onLogin()"
+            styleClass="login-button"
+          />
+        }
+      </ng-template>
+    </p-menubar>
+  </div>
+</header>

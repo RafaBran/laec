@@ -1,0 +1,89 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="card-header">
+        <i class="pi pi-lock"></i>
+        <h2>Login</h2>
+        <p>Acesse o sistema LAEC</p>
+      </div>
+
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+          
+          <div class="form-field">
+            <label for="username">Usuário</label>
+            <input 
+              type="text"
+              id="username" 
+              name="username"
+              [(ngModel)]="username"
+              [disabled]="isLoading"
+              required
+              autocomplete="username"
+              class="form-input" 
+              placeholder="seu.usuario" />
+          </div>
+
+          <div class="form-field">
+            <label for="password">Senha</label>
+            <input 
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              [disabled]="isLoading"
+              required
+              autocomplete="current-password"
+              class="form-input" />
+            <button 
+              type="button" 
+              class="toggle-password"
+              (click)="toggleShowPassword()"
+              [disabled]="isLoading">
+              <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            </button>
+          </div>
+
+          <div class="form-field remember-me">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox"
+                id="rememberMe"
+                name="rememberMe"
+                [(ngModel)]="rememberMe"
+                [disabled]="isLoading" />
+              <span>Lembrar-me neste dispositivo</span>
+            </label>
+            @if (rememberMe) {
+              <small class="remember-warning">
+                <i class="pi pi-info-circle"></i>
+                Não recomendado em computadores públicos
+              </small>
+            }
+          </div>
+
+          @if (loginError) {
+            <div class="login-error">
+              <i class="pi pi-exclamation-triangle"></i>
+              <span>{{ loginError }}</span>
+            </div>
+          }
+
+          <button 
+            type="submit"
+            class="btn-submit"
+            [disabled]="!loginForm.form.valid || isLoading">
+            @if (isLoading) {
+              <i class="pi pi-spinner pi-spin"></i>
+              <span>Entrando...</span>
+            } @else {
+              <i class="pi pi-sign-in"></i>
+              <span>Entrar</span>
+            }
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="sessoes-page">
+  <!-- Card solicitando Login (se não estiver autenticado) -->
+  @if (!isAuthenticated) {
+    <div class="authorization-required">
+      <div class="authorization-card">
+        <i class="pi pi-lock authorization-icon"></i>
+        <h2>Login Necessário</h2>
+        <p>Esta página é exclusiva para alunos.</p>
+        <p class="subtitle">Faça login com sua conta de aluno para acessar o registro de sessões.</p>
+        <button class="btn-login" (click)="goToLogin()">
+          <i class="pi pi-sign-in"></i>
+          <span>Fazer Login</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Mensagem se estiver autenticado mas não for aluno -->
+  @if (isAuthenticated && !isAluno) {
+    <div class="authorization-required">
+      <div class="authorization-card">
+        <i class="pi pi-lock authorization-icon"></i>
+        <h2>Login Necessário</h2>
+        <p>Esta página é exclusiva para alunos.</p>
+        <p class="subtitle">Não há ações para o seu perfil ({{ usuario?.tipo }}) nesta página.</p>
+      </div>
+    </div>  
+  }
+
+  <!-- Conteúdo para alunos autenticados -->
+  @if (isAuthenticated && isAluno) {
+    <!-- Cabeçalho -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="title-section">
+          <h1 class="page-title">
+            <i class="pi pi-list"></i>
+            Minhas Sessões
+          </h1>
+          <p class="page-subtitle">
+            Registro de suas sessões experimentais
+          </p>
+        </div>
+        <div class="user-section">
+          <div class="user-info">
+            <i class="pi pi-user"></i>
+            <span>{{ usuario?.nome }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="sessoes-content">
+      <div class="welcome-message">
+        <i class="pi pi-clipboard"></i>
+        <h3>Registro de Sessões Experimentais</h3>
+        <p>Esta seção permitirá visualizar e registrar as sessões experimentais realizadas no laboratório.</p>
+        <p class="info-text">Conteúdo em desenvolvimento...</p>
+      </div>
+    </div>
+  }
+</div>

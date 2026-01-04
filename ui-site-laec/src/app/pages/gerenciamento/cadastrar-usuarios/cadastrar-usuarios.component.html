@@ -1,0 +1,212 @@
+<div class="cadastrar-usuarios-page" [class.embedded]="isEmbedded">
+  @if (!isEmbedded) {
+    <div class="page-header">
+      <div class="header-content">
+        <button pButton class="p-button-text back-button" (click)="onCancel()">
+          <i class="pi pi-arrow-left"></i>
+        </button>
+        <div class="title-section">
+          <h1 class="page-title">
+            <i class="pi pi-user-plus"></i>
+            Cadastrar Usuário
+          </h1>
+          <p class="page-subtitle">Adicione um novo usuário ao sistema</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="form-container">
+    @if (errorMessage) {
+      <p-message severity="error" [text]="errorMessage" />
+    }
+
+    @if (successMessage) {
+      <p-message severity="success" [text]="successMessage" />
+    }
+
+    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" class="usuario-form">
+      <!-- Informações Básicas -->
+      <div class="form-section">
+        <h3 class="section-title">Informações Básicas</h3>
+        
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="nome">Nome Completo *</label>
+            <input 
+              pInputText 
+              id="nome" 
+              formControlName="nome"
+              placeholder="Digite o nome completo"
+              [class.p-invalid]="isFieldInvalid('nome')"
+            />
+            @if (isFieldInvalid('nome')) {
+              <small class="p-error">{{ getFieldError('nome') }}</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email *</label>
+            <input 
+              pInputText 
+              id="email" 
+              type="email"
+              formControlName="email"
+              placeholder="usuario@exemplo.com"
+              [class.p-invalid]="isFieldInvalid('email')"
+            />
+            @if (isFieldInvalid('email')) {
+              <small class="p-error">{{ getFieldError('email') }}</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="username">Nome de Usuário *</label>
+            <input 
+              pInputText 
+              id="username" 
+              formControlName="username"
+              placeholder="Digite o nome de usuário"
+              [class.p-invalid]="isFieldInvalid('username')"
+            />
+            @if (isFieldInvalid('username')) {
+              <small class="p-error">{{ getFieldError('username') }}</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="tipo">Tipo de Usuário *</label>
+            <p-select
+              id="tipo"
+              formControlName="tipo"
+              [options]="tiposUsuario"
+              placeholder="Selecione o tipo"
+              optionLabel="label"
+              optionValue="value"
+              [class.p-invalid]="isFieldInvalid('tipo')"
+              styleClass="w-full"
+            />
+            @if (isFieldInvalid('tipo')) {
+              <small class="p-error">{{ getFieldError('tipo') }}</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="telefone">Telefone</label>
+            <input 
+              pInputText 
+              id="telefone" 
+              formControlName="telefone"
+              placeholder="(62) 99999-9999"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="fotoUrl">URL da Foto</label>
+            <input 
+              pInputText 
+              id="fotoUrl" 
+              formControlName="fotoUrl"
+              placeholder="https://..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Informações Acadêmicas (apenas para alunos) -->
+      @if (isAluno) {
+        <div class="form-section">
+          <h3 class="section-title">Informações Acadêmicas</h3>
+          
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="curso">Curso *</label>
+              <input 
+                pInputText 
+                id="curso" 
+                formControlName="curso"
+                placeholder="Ex: Psicologia"
+                [class.p-invalid]="isFieldInvalid('curso')"
+              />
+              @if (isFieldInvalid('curso')) {
+                <small class="p-error">{{ getFieldError('curso') }}</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="periodo">Período *</label>
+              <input 
+                pInputText 
+                id="periodo" 
+                formControlName="periodo"
+                placeholder="Ex: 5º"
+                [class.p-invalid]="isFieldInvalid('periodo')"
+              />
+              @if (isFieldInvalid('periodo')) {
+                <small class="p-error">{{ getFieldError('periodo') }}</small>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Senha -->
+      <div class="form-section">
+        <h3 class="section-title">Senha de Acesso</h3>
+        
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="senha">Senha *</label>
+            <p-password 
+              id="senha" 
+              formControlName="senha"
+              placeholder="Mínimo 6 caracteres"
+              [toggleMask]="true"
+              [feedback]="true"
+              styleClass="w-full"
+            />
+            @if (isFieldInvalid('senha')) {
+              <small class="p-error">{{ getFieldError('senha') }}</small>
+            }
+          </div>
+
+          <div class="form-field">
+            <label for="confirmarSenha">Confirmar Senha *</label>
+            <p-password 
+              id="confirmarSenha" 
+              formControlName="confirmarSenha"
+              placeholder="Digite a senha novamente"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+            />
+            @if (isFieldInvalid('confirmarSenha')) {
+              <small class="p-error">{{ getFieldError('confirmarSenha') }}</small>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button 
+          pButton 
+          type="button" 
+          label="Cancelar" 
+          icon="pi pi-times"
+          class="p-button-secondary"
+          (click)="onCancel()"
+          [disabled]="isLoading"
+        ></button>
+        <button 
+          pButton 
+          type="submit" 
+          label="Cadastrar Usuário" 
+          icon="pi pi-check"
+          [loading]="isLoading"
+          [disabled]="usuarioForm.invalid"
+        ></button>
+      </div>
+    </form>
+  </div>
+</div>

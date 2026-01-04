@@ -1,0 +1,209 @@
+<div class="gerenciamento-page">
+  <!-- Card solicitando Login (se não estiver autenticado) -->
+  @if (!isAuthenticated) {
+    <div class="authorization-required">
+      <div class="authorization-card">
+        <i class="pi pi-lock authorization-icon"></i>
+        <h2>Login Necessário</h2>
+        <p>Esta página é exclusiva para administradores.</p>
+        <p class="subtitle">Faça login com sua conta de administrador para acessar o painel de gerenciamento.</p>
+        <button class="btn-login" (click)="goToLogin()">
+          <i class="pi pi-sign-in"></i>
+          <span>Fazer Login</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Mensagem se estiver autenticado mas não autorizado -->
+  @if (isAuthenticated && !isAuthorized) {
+    <div class="authorization-required">
+      <div class="authorization-card access-denied">
+        <i class="pi pi-ban authorization-icon"></i>
+        <h2>Acesso Negado</h2>
+        <p>Esta área é restrita a administradores, técnicos, professores e monitores.</p>
+        <p class="subtitle">Seu perfil ({{ usuario?.tipo }}) não tem permissão para acessar o painel de gerenciamento.</p>
+        <p class="info-text">Se você é um aluno, acesse a página "Sessões" para gerenciar suas sessões experimentais.</p>
+      </div>
+    </div>
+  }
+
+  <!-- Painel Administrativo (após login e com autorização) -->
+  @if (isAuthenticated && isAuthorized) {
+    <div class="page-header">
+      <div class="header-content">
+        <div class="title-section">
+          <h1 class="page-title">
+            <i class="pi pi-cog"></i>
+            Gerenciamento do Sistema
+          </h1>
+          <p class="page-subtitle">
+            Painel administrativo do Laboratório de Análise Experimental do Comportamento
+          </p>
+        </div>
+        
+        @if (usuario) {
+          <div class="user-section">
+            <div class="user-info">
+              <i class="pi pi-user"></i>
+              <span>{{ usuario.nome }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Layout com Sidebar -->
+    <div class="gerenciamento-layout">
+      <!-- Sidebar Menu -->
+      <aside class="sidebar-menu">
+        <div class="menu-header">
+          <i class="pi pi-bars"></i>
+          <span>Menu</span>
+        </div>
+
+        <nav class="menu-nav">
+          @for (item of menuItems; track item.id) {
+            <div class="menu-item">
+              <!-- Item Principal -->
+              <div 
+                class="menu-item-header"
+                [class.active]="item.expanded"
+                (click)="toggleMenuItem(item.id)">
+                <div class="item-content">
+                  <i [class]="item.icon"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+                <i 
+                  class="pi toggle-icon"
+                  [class.pi-chevron-down]="!item.expanded"
+                  [class.pi-chevron-up]="item.expanded"></i>
+              </div>
+
+              <!-- Submenu -->
+              @if (item.expanded) {
+                <div class="submenu">
+                  @for (subItem of item.subItems; track subItem.id) {
+                    <div 
+                      class="submenu-item"
+                      [class.selected]="selectedView === (item.id + '-' + subItem.action)"
+                      (click)="selectAction(item.id, subItem.action)">
+                      <i [class]="subItem.icon"></i>
+                      <span>{{ subItem.label }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </nav>
+      </aside>
+
+      <!-- Área de Conteúdo -->
+      <main class="content-area">
+        @if (!selectedView) {
+          <!-- Tela inicial sem seleção -->
+          <div class="welcome-message">
+            <i class="pi pi-arrow-left"></i>
+            <h3>Selecione uma opção no menu</h3>
+            <p>Escolha uma ação no menu lateral para começar</p>
+          </div>
+        } @else {
+          <!-- Conteúdo baseado na seleção -->
+          <div class="content-view">
+            @switch (selectedView) {
+              @case ('usuarios-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Usuários</h2>
+                </div>
+                <div class="view-content">
+                  <app-listar-usuarios />
+                </div>
+              }
+              @case ('usuarios-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-user-plus"></i> Cadastrar Novo Usuário</h2>
+                </div>
+                <div class="view-content">
+                  <app-cadastrar-usuarios 
+                    [isEmbedded]="true"
+                    (usuarioCadastrado)="onUsuarioCadastrado()"
+                  />
+                </div>
+              }
+              @case ('anos-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Anos</h2>
+                </div>
+                <div class="view-content">
+                  <p>Aqui ficará a lista de anos acadêmicos...</p>
+                </div>
+              }
+              @case ('anos-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-plus"></i> Cadastrar Novo Ano</h2>
+                </div>
+                <div class="view-content">
+                  <p>Formulário de cadastro de ano acadêmico...</p>
+                </div>
+              }
+              @case ('semestres-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Semestres</h2>
+                </div>
+                <div class="view-content">
+                  <p>Aqui ficará a lista de semestres...</p>
+                </div>
+              }
+              @case ('semestres-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-plus"></i> Cadastrar Novo Semestre</h2>
+                </div>
+                <div class="view-content">
+                  <p>Formulário de cadastro de semestre...</p>
+                </div>
+              }
+              @case ('turmas-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Turmas</h2>
+                </div>
+                <div class="view-content">
+                  <p>Aqui ficará a lista de turmas...</p>
+                </div>
+              }
+              @case ('turmas-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-plus"></i> Cadastrar Nova Turma</h2>
+                </div>
+                <div class="view-content">
+                  <p>Formulário de cadastro de turma...</p>
+                </div>
+              }
+              @case ('procedimentos-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Procedimentos</h2>
+                </div>
+                <div class="view-content">
+                  <p>Aqui ficará a lista de procedimentos...</p>
+                </div>
+              }
+              @case ('procedimentos-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-plus"></i> Cadastrar Novo Procedimento</h2>
+                </div>
+                <div class="view-content">
+                  <p>Formulário de cadastro de procedimento...</p>
+                </div>
+              }
+              @default {
+                <div class="view-header">
+                  <h2>View não encontrada</h2>
+                </div>
+              }
+            }
+          </div>
+        }
+      </main>
+    </div>
+  }
+</div>

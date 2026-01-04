@@ -1,0 +1,191 @@
+.cadastrar-aulas-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .back-button {
+      font-size: 1.5rem;
+    }
+
+    .header-content {
+      flex: 1;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      color: #2c3e50;
+      margin: 0 0 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      i {
+        color: #3b82f6;
+      }
+    }
+
+    .page-subtitle {
+      color: #64748b;
+      margin: 0;
+      font-size: 1rem;
+    }
+  }
+
+  .form-container {
+    margin-bottom: 2rem;
+
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      .form-title {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin: 0 0 1.5rem 0;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        .form-field {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          &.full-width {
+            grid-column: 1 / -1;
+          }
+
+          label {
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.9rem;
+          }
+
+          input,
+          p-datepicker,
+          p-select {
+            width: 100%;
+          }
+
+          ::ng-deep {
+            .p-inputtext,
+            .p-datepicker,
+            .p-select {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+      }
+    }
+  }
+
+  .table-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .table-title {
+      font-size: 1.5rem;
+      color: #2c3e50;
+      margin: 0 0 1.5rem 0;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    ::ng-deep {
+      .p-datatable {
+        .p-datatable-header {
+          background: #f8fafc;
+          border: none;
+          padding: 1rem;
+        }
+
+        .p-datatable-thead > tr > th {
+          background: #3b82f6;
+          color: white;
+          font-weight: 600;
+          border: none;
+          padding: 1rem;
+        }
+
+        .p-datatable-tbody > tr {
+          transition: all 0.2s;
+
+          &:hover {
+            background: #f1f5f9;
+          }
+
+          > td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+
+            .p-button {
+              margin: 0 0.25rem;
+            }
+          }
+        }
+
+        .empty-message {
+          text-align: center;
+          padding: 3rem !important;
+          color: #94a3b8;
+
+          i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+          }
+
+          p {
+            margin: 0;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .cadastrar-aulas-page {
+    padding: 1rem;
+
+    .page-header {
+      .page-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    .form-container .form-card,
+    .table-container {
+      padding: 1rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}

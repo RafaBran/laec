@@ -1,0 +1,82 @@
+<div class="procedimentos-page">
+  <!-- Cabeçalho -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <i class="pi pi-book"></i>
+          Procedimentos Experimentais
+        </h1>
+        <p class="page-subtitle">
+          Protocolos utilizados nas aulas práticas de Análise Experimental do Comportamento
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layout com Sidebar -->
+  <div class="procedimentos-layout">
+    <!-- Sidebar Menu -->
+    <aside class="sidebar-menu">
+      <div class="menu-header">
+        <i class="pi pi-list"></i>
+        <span>Procedimentos</span>
+      </div>
+
+      <nav class="menu-nav">
+        @for (item of menuItems; track item.id) {
+          <div 
+            class="menu-item"
+            [class.selected]="selectedProcedimento?.id === item.id"
+            (click)="selectProcedimento(item)">
+            <div class="item-numero">{{ item.numero }}</div>
+            <div class="item-content">
+              <i [class]="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </div>
+          </div>
+        }
+      </nav>
+    </aside>
+
+    <!-- Área de Conteúdo -->
+    <main class="content-area">
+      @if (!selectedProcedimento) {
+        <div class="welcome-message">
+          <i class="pi pi-arrow-left"></i>
+          <h3>Selecione um procedimento</h3>
+          <p>Escolha um procedimento no menu lateral para visualizar os detalhes</p>
+        </div>
+      } @else {
+        <div class="content-view">
+          <div class="view-header">
+            <div class="header-title">
+              <span class="procedimento-numero">{{ selectedProcedimento.numero }}</span>
+              <h2>
+                <i [class]="selectedProcedimento.icon"></i>
+                {{ selectedProcedimento.label }}
+              </h2>
+            </div>
+          </div>
+          
+          <div class="view-content">
+            <div class="content-section">
+              <h3><i class="pi pi-align-left"></i> Descrição</h3>
+              <p>{{ selectedProcedimento.descricao }}</p>
+            </div>
+
+            <div class="content-section">
+              <h3><i class="pi pi-flag"></i> Objetivo</h3>
+              <p>{{ selectedProcedimento.objetivo }}</p>
+            </div>
+
+            <div class="content-section">
+              <h3><i class="pi pi-info-circle"></i> Detalhes</h3>
+              <p>{{ selectedProcedimento.detalhes }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </main>
+  </div>
+</div>

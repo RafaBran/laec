@@ -1,0 +1,324 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+/* Reset e configurações globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7fafc;
+  color: #2d3748;
+}
+
+body {
+  line-height: 1.6;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+}
+
+/* Ajuste de fonte base para diferentes tamanhos de tela */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Variáveis CSS personalizadas - Tema Vinho */
+:root {
+  /* Cores Principais - Vinho */
+  --primary-color: #722f37;
+  --primary-light: #8b4049;
+  --primary-dark: #5a1f2a;
+  --primary-gradient: linear-gradient(135deg, #722f37 0%, #5a1f2a 100%);
+  
+  /* Cores Secundárias - Cinza */
+  --secondary-color: #4a5568;
+  --secondary-light: #718096;
+  --secondary-dark: #2d3748;
+  
+  /* Accent - Vermelho Sangue */
+  --accent-color: #8b1e1e;
+  --accent-light: #a02626;
+  --accent-dark: #6b1515;
+  
+  /* Cores de Status */
+  --success-color: #48bb78;
+  --warning-color: #ed8936;
+  --danger-color: #8b1e1e;
+  
+  /* Backgrounds */
+  --background: #f7fafc;
+  --background-dark: #1a202c;
+  --surface: #ffffff;
+  --surface-secondary: #f8f9fa;
+  
+  /* Textos */
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --text-light: #a0aec0;
+  
+  /* Bordas */
+  --border-color: #e2e8f0;
+  --border-light: #edf2f7;
+}
+
+/* Scrollbar customizado */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Utilidades */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Customizações PrimeNG - Tema Vinho */
+:root {
+  --p-primary-color: #722f37;
+  --p-primary-contrast-color: #ffffff;
+  --p-primary-hover-color: #5a1f2a;
+  --p-primary-active-color: #8b4049;
+  
+  --p-surface-0: #ffffff;
+  --p-surface-50: #f8f9fa;
+  --p-surface-100: #f1f3f5;
+  
+  --p-content-color: #2d3748;
+  --p-content-hover-color: #722f37;
+  
+  --p-highlight-background: rgba(114, 47, 55, 0.1);
+  --p-highlight-color: #722f37;
+  --p-highlight-focus-background: rgba(114, 47, 55, 0.2);
+}
+
+/* Customizar componentes PrimeNG */
+.p-button {
+  &.p-button-primary {
+    background: var(--primary-gradient);
+    border-color: var(--primary-color);
+    
+    &:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+  }
+  
+  &.p-button-danger {
+    background: var(--accent-color);
+    border-color: var(--accent-dark);
+    
+    &:hover {
+      background: var(--accent-dark);
+    }
+  }
+}
+
+.p-tabview {
+  .p-tabview-nav {
+    border-bottom: 2px solid var(--border-color);
+    
+    .p-tabview-nav-link {
+      &:not(.p-disabled):focus {
+        box-shadow: 0 0 0 0.2rem rgba(114, 47, 55, 0.2);
+      }
+    }
+    
+    .p-tabview-nav-link.p-highlight {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+  }
+}
+
+.p-card {
+  box-shadow: 0 2px 8px rgba(114, 47, 55, 0.1);
+  border: 1px solid var(--border-light);
+  
+  .p-card-title {
+    color: var(--primary-dark);
+  }
+}
+
+/* Utilitários Responsivos */
+.container {
+  width: 100%;
+  padding-right: clamp(0.75rem, 3vw, 2rem);
+  padding-left: clamp(0.75rem, 3vw, 2rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Classes de visibilidade responsiva */
+.hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.hide-tablet {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 1025px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+  @media (max-width: 768px) {
+    display: block !important;
+  }
+}
+
+/* Espaçamentos responsivos */
+.responsive-padding {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.responsive-margin {
+  margin: clamp(1rem, 3vw, 2rem);
+}
+
+/* Grid responsivo */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Imagens responsivas */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Touch targets - acessibilidade mobile */
+@media (max-width: 768px) {
+  button,
+  a,
+  .p-button,
+  .p-menuitem-link {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Evitar zoom em inputs no iOS */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Performance - reduzir animações em dispositivos móveis */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* Estilos para itens do menu que requerem autenticação */
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(5) > .p-menuitem-content .p-menuitem-link,
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(6) > .p-menuitem-content .p-menuitem-link {
+  background: rgba(255, 193, 7, 0.3) !important;
+  border: 2px solid rgba(255, 193, 7, 0.7) !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(5) > .p-menuitem-content .p-menuitem-link:hover,
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(6) > .p-menuitem-content .p-menuitem-link:hover {
+  background: rgba(255, 193, 7, 0.5) !important;
+  border-color: rgba(255, 193, 7, 1) !important;
+  transform: translateY(-2px);
+}
+
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(5) .p-menuitem-icon,
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(6) .p-menuitem-icon {
+  color: #ffb300 !important;
+  font-weight: bold !important;
+}
+
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(5) .p-menuitem-text,
+.custom-menubar .p-menubar-root-list > .p-menuitem:nth-child(6) .p-menuitem-text {
+  color: #fff3cd !important;
+  font-weight: 700 !important;
+}

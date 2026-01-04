@@ -1,0 +1,228 @@
+.header {
+  background: linear-gradient(135deg, #722f37 0%, #8b1e1e 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(114, 47, 55, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  
+  .header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+  }
+  
+  .logo-section {
+    margin-bottom: 1rem;
+    text-align: center;
+    
+    .site-title {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin: 0;
+      color: white;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .site-subtitle {
+      font-size: clamp(0.75rem, 2vw, 1rem);
+      margin: 0.25rem 0 0 0;
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 300;
+    }
+  }
+  
+  :ng-deep .custom-menubar {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    
+    .p-menubar-end {
+      display: flex;
+      flex-direction: row !important;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .p-menubar-root-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+    
+    .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+      color: white;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1rem;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      
+      &:hover {
+        background: rgba(139, 30, 30, 0.3);
+        border-radius: 6px;
+      }
+      
+      &.p-focus {
+        background: rgba(139, 30, 30, 0.2);
+      }
+      
+      .p-menuitem-icon {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+      }
+      
+      .p-menuitem-text {
+        margin-left: 0.5rem;
+      }
+    }
+    
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-radius: 12px;
+      border: 2px solid rgba(114, 47, 55, 0.2);
+      
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #722f37;
+        font-weight: 600;
+        
+        i {
+          color: #722f37;
+          font-size: 1.1rem;
+        }
+        
+        span {
+          font-size: clamp(0.9rem, 1.8vw, 1rem);
+        }
+      }
+    }
+    
+    .login-button {
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      padding: 0.5rem 1rem;
+      
+      &:hover {
+        background: rgba(139, 30, 30, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .p-menubar-button {
+      color: white;
+      
+      &:hover {
+        background: rgba(139, 30, 30, 0.3);
+      }
+    }
+  }
+}
+
+/* Tablet - até 1024px */
+@media (max-width: 1024px) {
+  .header {
+    .header-container {
+      padding: 1rem 1.5rem;
+    }
+    
+    .logo-section {
+      margin-bottom: 0.75rem;
+    }
+    
+    :ng-deep .custom-menubar {
+      .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+        padding: 0.6rem 0.8rem;
+      }
+    }
+  }
+}
+
+/* Mobile - até 768px */
+@media (max-width: 768px) {
+  .header {
+    .header-container {
+      padding: 0.75rem 1rem;
+    }
+    
+    .logo-section {
+      margin-bottom: 0.5rem;
+      
+      .site-subtitle {
+        display: none;
+      }
+    }
+    
+    :ng-deep .custom-menubar {
+      .p-menubar-root-list {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .p-menubar-root-list > .p-menuitem {
+        width: 100%;
+      }
+      
+      .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+        justify-content: flex-start;
+        padding: 0.75rem 1rem;
+      }
+      
+      .p-menubar-end {
+        margin-top: 0.5rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        
+        .user-section {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        
+        .login-button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* Mobile Small - até 480px */
+@media (max-width: 480px) {
+  .header {
+    .header-container {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .logo-section {
+      .site-title {
+        letter-spacing: 0;
+      }
+    }
+    
+    :ng-deep .custom-menubar {
+      border-radius: 6px;
+      
+      .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+        padding: 0.65rem 0.75rem;
+        
+        .p-menuitem-icon {
+          font-size: 1rem;
+        }
+        
+        .p-menuitem-text {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}

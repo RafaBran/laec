@@ -1,0 +1,503 @@
+.gerenciar-aulas-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+
+  .page-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      color: var(--wine-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+    }
+  }
+
+  // ==========================================
+  // BARRA DE PROGRESSO
+  // ==========================================
+  .progress-bar {
+    height: 4px;
+    background: var(--surface-100);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--wine-primary), var(--wine-secondary));
+      transition: width 0.3s ease;
+    }
+  }
+
+  // ==========================================
+  // MENSAGENS
+  // ==========================================
+  p-message {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  // ==========================================
+  // ETAPA 1: SELEÇÃO
+  // ==========================================
+  .etapa-selecao {
+    .selecao-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .selecao-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--surface-border);
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: var(--wine-primary);
+        box-shadow: 0 4px 12px rgba(114, 47, 55, 0.1);
+      }
+
+      h3 {
+        font-size: 1.1rem;
+        color: var(--wine-dark);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        i {
+          color: var(--wine-primary);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // ETAPA 2: DADOS DA AULA
+  // ==========================================
+  .etapa-aula {
+    .form-aula {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 2px solid var(--surface-border);
+
+      h2 {
+        font-size: 1.5rem;
+        color: var(--wine-dark);
+        margin-bottom: 1.5rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-field {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          font-weight: 600;
+          color: var(--text-color);
+          margin-bottom: 0.5rem;
+          font-size: 0.95rem;
+        }
+
+        input[readonly] {
+          background: var(--surface-100);
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // ETAPA 3: GRUPOS
+  // ==========================================
+  .etapa-grupos {
+    h2 {
+      font-size: 1.5rem;
+      color: var(--wine-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .sugestao-card {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 2px solid #fbbf24;
+
+      .sugestao-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        h3 {
+          font-size: 1.2rem;
+          color: #78350f;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          i {
+            font-size: 1.5rem;
+          }
+        }
+
+        .sugestao-actions {
+          display: flex;
+          gap: 0.5rem;
+        }
+      }
+
+      .sugestao-lista {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .sugestao-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.75rem;
+          background: white;
+          border-radius: 8px;
+
+          .ordem-badge {
+            background: var(--wine-primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+          }
+
+          .grupo-nome {
+            font-weight: 600;
+            color: var(--text-color);
+          }
+
+          .info-texto {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    .grupos-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+
+      .grupo-item {
+        background: white;
+        padding: 1.25rem;
+        border-radius: 12px;
+        border: 2px solid var(--surface-border);
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        transition: all 0.3s ease;
+
+        &.selecionado {
+          border-color: var(--wine-primary);
+          background: linear-gradient(to right, #fef2f2 0%, white 20%);
+        }
+
+        .grupo-checkbox {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex: 1;
+          min-width: 150px;
+
+          input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+          }
+
+          label {
+            cursor: pointer;
+            user-select: none;
+            margin: 0;
+          }
+        }
+
+        .grupo-ordem {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          .ordem-numero {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--wine-primary);
+            min-width: 40px;
+            text-align: center;
+          }
+        }
+
+        .grupo-horarios {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+
+          input[type="time"] {
+            padding: 0.5rem;
+            border: 1px solid var(--surface-border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+          }
+
+          span {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // ETAPA 4: CONFIRMAÇÃO
+  // ==========================================
+  .etapa-confirmacao {
+    h2 {
+      font-size: 1.5rem;
+      color: var(--wine-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .resumo-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid var(--surface-border);
+      margin-bottom: 1.5rem;
+
+      h3 {
+        font-size: 1.2rem;
+        color: var(--wine-dark);
+        margin-bottom: 1rem;
+      }
+
+      .resumo-item {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--surface-border);
+
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        strong {
+          min-width: 120px;
+          color: var(--wine-dark);
+        }
+      }
+
+      .timeline-resumo {
+        .timeline-item-resumo {
+          display: flex;
+          gap: 1rem;
+          padding: 1rem;
+          margin-bottom: 1rem;
+          background: var(--surface-50);
+          border-radius: 8px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .ordem-badge-lg {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--wine-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+          }
+
+          .grupo-info-resumo {
+            flex: 1;
+
+            strong {
+              display: block;
+              font-size: 1.1rem;
+              color: var(--wine-dark);
+              margin-bottom: 0.25rem;
+            }
+
+            span {
+              display: block;
+              color: var(--text-secondary);
+              font-size: 0.9rem;
+              margin-bottom: 0.5rem;
+            }
+
+            .obs-texto {
+              color: var(--text-color);
+              font-size: 0.9rem;
+              font-style: italic;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .alerta-prioridade {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      border: 2px solid #3b82f6;
+
+      i {
+        font-size: 1.5rem;
+        color: #1e40af;
+        flex-shrink: 0;
+      }
+
+      p {
+        margin: 0;
+        color: #1e40af;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  // ==========================================
+  // AÇÕES DO FORMULÁRIO
+  // ==========================================
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--surface-border);
+    flex-wrap: wrap;
+
+    button {
+      min-width: 150px;
+    }
+  }
+
+  // ==========================================
+  // DIALOG
+  // ==========================================
+  .dialog-content {
+    padding: 1rem 0;
+
+    .form-field {
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--surface-border);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: var(--wine-primary);
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // RESPONSIVIDADE
+  // ==========================================
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .form-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .etapa-grupos {
+      .grupo-item {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .grupo-checkbox {
+          width: 100%;
+        }
+
+        .grupo-ordem,
+        .grupo-horarios {
+          width: 100%;
+        }
+      }
+    }
+
+    .etapa-confirmacao {
+      .resumo-card {
+        .resumo-item {
+          flex-direction: column;
+          gap: 0.25rem;
+
+          strong {
+            min-width: auto;
+          }
+        }
+      }
+    }
+  }
+}

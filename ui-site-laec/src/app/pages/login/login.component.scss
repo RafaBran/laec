@@ -1,0 +1,329 @@
+.login-page {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(114, 47, 55, 0.03) 0%, rgba(139, 30, 30, 0.03) 100%);
+  
+  .login-container {
+    width: 100%;
+    max-width: 450px;
+    
+    .login-card {
+      background: white;
+      border: 2px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      
+      .card-header {
+        background: linear-gradient(135deg, #722f37 0%, #8b1e1e 100%);
+        color: white;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        
+        i {
+          font-size: 3rem;
+          display: block;
+          margin-bottom: 1rem;
+        }
+        
+        h2 {
+          margin: 0 0 0.5rem 0;
+          font-size: 1.75rem;
+          font-weight: 700;
+        }
+        
+        p {
+          margin: 0;
+          opacity: 0.9;
+          font-size: 1rem;
+        }
+      }
+      
+      .card-body {
+        padding: 2rem;
+        
+        .login-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          
+          .form-field {
+            position: relative;
+            
+            label {
+              display: block;
+              margin-bottom: 0.5rem;
+              font-weight: 500;
+              color: #374151;
+              font-size: 0.95rem;
+            }
+            
+            .form-input {
+              width: 100%;
+              padding: 0.875rem 1rem;
+              font-size: 1rem;
+              border: 2px solid #d1d5db;
+              border-radius: 8px;
+              transition: all 0.2s ease;
+              
+              &:hover {
+                border-color: #722f37;
+              }
+              
+              &:focus {
+                outline: none;
+                border-color: #722f37;
+                box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+              }
+              
+              &:disabled {
+                background: #f3f4f6;
+                cursor: not-allowed;
+              }
+            }
+            
+            .toggle-password {
+              position: absolute;
+              right: 10px;
+              top: 38px;
+              background: none;
+              border: none;
+              cursor: pointer;
+              color: #6b7280;
+              padding: 0.5rem;
+              
+              &:hover {
+                color: #722f37;
+              }
+              
+              &:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+              }
+            }
+
+            // Estilo para o checkbox "Lembrar-me"
+            &.remember-me {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              margin-top: -0.5rem;
+
+              .checkbox-label {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+                user-select: none;
+
+                input[type="checkbox"] {
+                  width: 18px;
+                  height: 18px;
+                  cursor: pointer;
+                  accent-color: #722f37;
+                  
+                  &:disabled {
+                    cursor: not-allowed;
+                  }
+                }
+
+                span {
+                  font-weight: 400;
+                  color: #374151;
+                  font-size: 0.9rem;
+                }
+              }
+
+              .remember-warning {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                color: #d97706;
+                font-size: 0.8rem;
+                margin-left: 1.5rem;
+                
+                i {
+                  font-size: 0.85rem;
+                }
+              }
+            }
+          }
+          
+          .login-error {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #dc2626;
+            font-size: 0.9rem;
+            
+            i {
+              font-size: 1.1rem;
+            }
+          }
+          
+          .btn-submit {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #722f37 0%, #8b1e1e 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            
+            &:hover:not(:disabled) {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 16px rgba(114, 47, 55, 0.3);
+            }
+            
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
+            
+            i {
+              font-size: 1.1rem;
+              
+              &.pi-spin {
+                animation: spin 1s linear infinite;
+              }
+            }
+          }
+        }
+      }
+      
+      .card-footer {
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        padding: 1.5rem 2rem;
+        
+        .info-section {
+          margin-bottom: 1.5rem;
+          
+          .info-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0 0 1rem 0;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+            
+            i {
+              color: #722f37;
+              font-size: 1.1rem;
+            }
+          }
+          
+          .access-profiles {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            
+            .profile-item {
+              display: flex;
+              align-items: flex-start;
+              gap: 0.75rem;
+              padding: 0.875rem 1rem;
+              background: white;
+              border: 1px solid #e5e7eb;
+              border-radius: 8px;
+              text-align: left;
+              transition: all 0.2s ease;
+              
+              &:hover {
+                border-color: #722f37;
+                box-shadow: 0 2px 8px rgba(114, 47, 55, 0.1);
+              }
+              
+              i {
+                color: #722f37;
+                font-size: 1.1rem;
+                margin-top: 0.125rem;
+                flex-shrink: 0;
+              }
+              
+              span {
+                color: #4b5563;
+                font-size: 0.875rem;
+                line-height: 1.5;
+                
+                strong {
+                  color: #1f2937;
+                  display: block;
+                  margin-bottom: 0.125rem;
+                }
+              }
+            }
+          }
+        }
+        
+        .help-text {
+          margin: 0;
+          padding-top: 1rem;
+          border-top: 1px solid #e5e7eb;
+          color: #6b7280;
+          font-size: 0.85rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          
+          i {
+            color: #722f37;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .login-page {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 0.75rem;
+    
+    .login-container .login-card {
+      .card-header {
+        padding: 2rem 1.5rem;
+        
+        i {
+          font-size: 2.5rem;
+        }
+        
+        h2 {
+          font-size: 1.5rem;
+        }
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+      }
+    }
+  }
+}

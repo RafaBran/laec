@@ -1,0 +1,109 @@
+<div class="aula-card" (click)="onDetalhes()">
+  <!-- Header com informações principais -->
+  <div class="aula-header">
+    <div class="aula-info-principal">
+      <div class="aula-meta">
+        <span class="aula-data">
+          <i class="pi pi-calendar"></i>
+          {{ AulaUtils.formatarDataCurta(aula.dataAula) }}
+        </span>
+      </div>
+      <h3 class="aula-tema">{{ aula.tema }}</h3>
+      <p class="aula-procedimento">
+        <span class="label">Procedimento:</span>
+        <span class="valor">{{ aula.nomeProcedimento || aula.procedimento }}</span>
+      </p>
+    </div>
+    
+    <div class="aula-estatisticas">
+      <div class="stat presentes">
+        <span class="stat-icon">✓</span>
+        <span class="stat-value">{{ presentes }}</span>
+        <span class="stat-label">presentes</span>
+      </div>
+      <div class="stat faltas">
+        <span class="stat-icon">✗</span>
+        <span class="stat-value">{{ faltas }}</span>
+        <span class="stat-label">faltas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grupos por Turno (lado a lado) -->
+  <div class="aula-turnos-horizontal">
+    <!-- Turno 1 -->
+    <div class="turno">
+      <div class="turno-header">
+        <span class="turno-titulo">1º Turno</span>
+        <span class="turno-count">({{ turno1.length }} grupos)</span>
+      </div>
+      
+      @if (turno1Presentes.length > 0) {
+        <div class="grupos-secao">
+          <span class="secao-label">Presentes</span>
+          <div class="grupos-list">
+            @for (grupoAula of turno1Presentes; track grupoAula.grupoAulaId) {
+              <div class="grupo-item presente">
+                <span class="grupo-numero">Grupo {{ grupoAula.numeroGrupo }}</span>
+                <span class="grupo-presenca-icon">✓</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      
+      @if (turno1Faltas.length > 0) {
+        <div class="grupos-secao">
+          <span class="secao-label">Faltantes</span>
+          <div class="grupos-list">
+            @for (grupoAula of turno1Faltas; track grupoAula.grupoAulaId) {
+              <div class="grupo-item falta">
+                <span class="grupo-numero">Grupo {{ grupoAula.numeroGrupo }}</span>
+                <span class="grupo-presenca-icon">✗</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Turno 2 -->
+    @if (turno2.length > 0) {
+      <div class="turno">
+        <div class="turno-header">
+          <span class="turno-titulo">2º Turno</span>
+          <span class="turno-count">({{ turno2.length }} grupos)</span>
+        </div>
+        
+        @if (turno2Presentes.length > 0) {
+          <div class="grupos-secao">
+            <span class="secao-label">Presentes</span>
+            <div class="grupos-list">
+              @for (grupoAula of turno2Presentes; track grupoAula.grupoAulaId) {
+                <div class="grupo-item presente">
+                  <span class="grupo-numero">Grupo {{ grupoAula.numeroGrupo }}</span>
+                  <span class="grupo-presenca-icon">✓</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+        
+        @if (turno2Faltas.length > 0) {
+          <div class="grupos-secao">
+            <span class="secao-label">Faltantes</span>
+            <div class="grupos-list">
+              @for (grupoAula of turno2Faltas; track grupoAula.grupoAulaId) {
+                <div class="grupo-item falta">
+                  <span class="grupo-numero">Grupo {{ grupoAula.numeroGrupo }}</span>
+                  <span class="grupo-presenca-icon">✗</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+</div>

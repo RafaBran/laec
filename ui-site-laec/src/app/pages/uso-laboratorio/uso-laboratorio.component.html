@@ -1,0 +1,159 @@
+<div class="uso-laboratorio-page">
+  <!-- Cabeçalho -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <i class="pi pi-desktop"></i>
+          Uso do Laboratório
+        </h1>
+        <p class="page-subtitle">
+          Visualize o uso do laboratório por ano, semestre e turma
+        </p>
+      </div>
+    </div>
+  </div>
+
+    <!-- Layout com Sidebar -->
+    <div class="uso-laboratorio-layout">
+      <!-- Sidebar Menu Hierárquico -->
+      <aside class="sidebar-menu">
+        <div class="menu-header">
+          <i class="pi pi-calendar"></i>
+          <span>Anos Letivos</span>
+        </div>
+
+        <nav class="menu-nav">
+          @if (carregandoAnos) {
+            <div class="loading-state">
+              <i class="pi pi-spin pi-spinner"></i>
+              <span>Carregando...</span>
+            </div>
+          } @else {
+            @for (ano of anos; track ano.id) {
+              <div class="menu-item">
+                <!-- Nível 1: Ano -->
+                <div 
+                  class="menu-item-header level-1"
+                  [class.active]="ano.expanded"
+                  (click)="toggleAno(ano)">
+                  <div class="item-content">
+                    <i class="pi pi-calendar"></i>
+                    <span>{{ ano.descricao }}</span>
+                    @if (ano.ativo) {
+                      <span class="badge-ativo">Ativo</span>
+                    }
+                  </div>
+                  <i 
+                    class="pi toggle-icon"
+                    [class.pi-chevron-down]="!ano.expanded"
+                    [class.pi-chevron-up]="ano.expanded"></i>
+                </div>
+
+                <!-- Nível 2: Semestres (dentro do Ano) -->
+                @if (ano.expanded) {
+                  <div class="submenu level-2">
+                    @for (semestre of ano.semestres; track semestre.id) {
+                      <div class="submenu-item">
+                        <div 
+                          class="submenu-item-header"
+                          [class.active]="semestre.expanded"
+                          (click)="toggleSemestre(semestre)">
+                          <div class="item-content">
+                            <i class="pi pi-bookmark"></i>
+                            <span>{{ semestre.descricao }}</span>
+                          </div>
+                          <i 
+                            class="pi toggle-icon"
+                            [class.pi-chevron-down]="!semestre.expanded"
+                            [class.pi-chevron-up]="semestre.expanded"></i>
+                        </div>
+
+                        <!-- Nível 3: Turmas (dentro do Semestre) -->
+                        @if (semestre.expanded) {
+                          <div class="submenu level-3">
+                            @for (turma of semestre.turmas; track turma.id) {
+                              <div 
+                                class="submenu-item"
+                                [class.selected]="turmaSelecionada?.id === turma.id"
+                                (click)="selecionarTurma(turma)">
+                                <i class="pi pi-building"></i>
+                                <div class="turma-info">
+                                  <span class="turma-nome">{{ turma.nome }}</span>
+                                  <span class="turma-detalhes">{{ turma.turno }} - {{ turma.dia_semana }}</span>
+                                </div>
+                              </div>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </nav>
+      </aside>
+
+      <!-- Área de Conteúdo -->
+      <main class="content-area">
+        @if (!turmaSelecionada) {
+          <div class="welcome-message">
+            <i class="pi pi-arrow-left"></i>
+            <h3>Selecione uma turma</h3>
+            <p>Escolha uma turma no menu lateral para visualizar as aulas práticas</p>
+          </div>
+        } @else {
+          <div class="content-view">
+            <div class="view-header">
+              <h2>
+                <i class="pi pi-building"></i> 
+                {{ turmaSelecionada.nome }}
+              </h2>
+              <div class="turma-badges">
+                <span class="badge badge-unidade">{{ turmaSelecionada.unidade }}</span>
+                <span class="badge badge-turno">{{ turmaSelecionada.turno }}</span>
+                <span class="badge badge-dia">{{ turmaSelecionada.dia_semana }}</span>
+              </div>
+            </div>
+            
+            <div class="view-content">
+              <!-- Pr\u00f3xima Aula -->
+              <app-proxima-aula [prioridade]="proximaAulaPrioridade"></app-proxima-aula>
+              
+              <!-- Aulas Pr\u00e1ticas Realizadas -->
+              <div class="aulas-section">
+                <h3 class="section-title">
+                  <i class="pi pi-history"></i>
+                  Aulas Realizadas
+                </h3>
+                
+                @if (carregandoAulas) {
+                  <div class="loading-state">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Carregando aulas...</span>
+                  </div>
+                } @else if (aulasPraticas.length === 0) {
+                  <div class="empty-state">
+                    <i class="pi pi-calendar"></i>
+                    <p>Nenhuma aula prática agendada para esta turma</p>
+                  </div>
+                } @else {
+                  <div class="aulas-grid">
+                    @for (aula of aulasPraticas; track aula.aulaId) {
+                      <app-aula-card 
+                        [aula]="aula"
+                        [modoVisualizacao]="true"
+                        (detalhesClick)="onDetalhesAula($event)">
+                      </app-aula-card>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </main>
+    </div>
+</div>
