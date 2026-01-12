@@ -19,6 +19,13 @@ export class TurmaService {
   }
 
   /**
+   * Buscar todas as turmas com estrutura completa (incluindo anoLetivo)
+   */
+  getAllTurmas(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL);
+  }
+
+  /**
    * Buscar turma por ID
    */
   getTurmaById(id: number): Observable<Turma> {
@@ -67,7 +74,7 @@ export class TurmaService {
   /**
    * Criar nova turma
    */
-  criarTurma(turma: Omit<Turma, 'turma_id' | 'created_at' | 'updated_at'>): Observable<Turma> {
+  criarTurma(turma: Omit<Turma, 'turmaId' | 'createdAt' | 'updatedAt'>): Observable<Turma> {
     return this.http.post<Turma>(this.API_URL, turma);
   }
 

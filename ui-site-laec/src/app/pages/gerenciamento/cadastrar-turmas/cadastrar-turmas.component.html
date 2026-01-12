@@ -1,0 +1,164 @@
+<div class="cadastrar-turmas-container">
+  <p-toast />
+
+  <div class="card">
+    <div class="form-header">
+      <h2><i class="pi pi-building"></i> {{ modoEdicao ? 'Editar Turma' : 'Cadastrar Nova Turma' }}</h2>
+    </div>
+
+    <form [formGroup]="turmaForm" (ngSubmit)="salvar()" class="turma-form">
+      <div class="form-grid">
+        <!-- Ano -->
+        <div class="form-field">
+          <label for="ano" class="required">Ano Letivo</label>
+          <p-select 
+            id="ano"
+            formControlName="ano"
+            [options]="anos"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o ano"
+            [style]="{'width': '100%'}"
+            [class.ng-invalid]="campoInvalido('ano')"
+            [class.ng-dirty]="campoInvalido('ano')">
+          </p-select>
+          <small class="p-error" *ngIf="campoInvalido('ano')">
+            {{ getMensagemErro('ano') }}
+          </small>
+        </div>
+
+        <!-- Semestre -->
+        <div class="form-field">
+          <label for="semestre" class="required">Semestre</label>
+          <p-select 
+            id="semestre"
+            formControlName="semestre"
+            [options]="semestres"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o semestre"
+            [style]="{'width': '100%'}"
+            [class.ng-invalid]="campoInvalido('semestre')"
+            [class.ng-dirty]="campoInvalido('semestre')">
+          </p-select>
+          <small class="p-error" *ngIf="campoInvalido('semestre')">
+            {{ getMensagemErro('semestre') }}
+          </small>
+        </div>
+
+        <!-- Turno -->
+        <div class="form-field">
+          <label for="turno" class="required">Turno</label>
+          <p-select 
+            id="turno"
+            formControlName="turno"
+            [options]="turnos"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o turno"
+            [style]="{'width': '100%'}"
+            [class.ng-invalid]="campoInvalido('turno')"
+            [class.ng-dirty]="campoInvalido('turno')">
+          </p-select>
+          <small class="p-error" *ngIf="campoInvalido('turno')">
+            {{ getMensagemErro('turno') }}
+          </small>
+        </div>
+
+        <!-- Unidade -->
+        <div class="form-field">
+          <label for="unidade" class="required">Unidade</label>
+          <p-select 
+            id="unidade"
+            formControlName="unidade"
+            [options]="unidades"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione a unidade"
+            [style]="{'width': '100%'}"
+            [class.ng-invalid]="campoInvalido('unidade')"
+            [class.ng-dirty]="campoInvalido('unidade')">
+          </p-select>
+          <small class="p-error" *ngIf="campoInvalido('unidade')">
+            {{ getMensagemErro('unidade') }}
+          </small>
+        </div>
+
+        <!-- Dia da Semana -->
+        <div class="form-field">
+          <label for="diaSemana" class="required">Dia da Semana</label>
+          <p-select 
+            id="diaSemana"
+            formControlName="diaSemana"
+            [options]="diasSemana"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o dia"
+            [style]="{'width': '100%'}"
+            [class.ng-invalid]="campoInvalido('diaSemana')"
+            [class.ng-dirty]="campoInvalido('diaSemana')">
+          </p-select>
+          <small class="p-error" *ngIf="campoInvalido('diaSemana')">
+            {{ getMensagemErro('diaSemana') }}
+          </small>
+        </div>
+
+        <!-- Nome da Turma -->
+        <div class="form-field form-field-full">
+          <label for="nomeTurma" class="required">Nome da Turma</label>
+          <input 
+            id="nomeTurma"
+            type="text" 
+            pInputText 
+            formControlName="nomeTurma"
+            placeholder="Ex: Engenharia de Software - Turma A"
+            [class.ng-invalid]="campoInvalido('nomeTurma')"
+            [class.ng-dirty]="campoInvalido('nomeTurma')">
+          <small class="p-error" *ngIf="campoInvalido('nomeTurma')">
+            {{ getMensagemErro('nomeTurma') }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Informações sobre o formulário -->
+      <div class="info-box">
+        <i class="pi pi-info-circle"></i>
+        <div class="info-content">
+          <strong>Informações importantes:</strong>
+          <ul>
+            <li>Todos os campos são obrigatórios</li>
+            <li>O nome da turma deve ser descritivo e único</li>
+            <li>Após cadastrar, você poderá criar grupos e aulas práticas para esta turma</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Botões de ação -->
+      <div class="form-actions">
+        <p-button 
+          type="button"
+          label="Limpar" 
+          icon="pi pi-times" 
+          (onClick)="limparFormulario()"
+          styleClass="p-button-outlined p-button-secondary"
+          [disabled]="salvando">
+        </p-button>
+        <p-button 
+          type="button"
+          label="Cancelar" 
+          icon="pi pi-ban" 
+          (onClick)="voltarListagem()"
+          styleClass="p-button-outlined"
+          [disabled]="salvando">
+        </p-button>
+        <p-button 
+          type="submit"
+          [label]="modoEdicao ? 'Atualizar' : 'Cadastrar'" 
+          [icon]="salvando ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+          styleClass="p-button-success"
+          [disabled]="salvando || turmaForm.invalid">
+        </p-button>
+      </div>
+    </form>
+  </div>
+</div>

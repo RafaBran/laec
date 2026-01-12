@@ -22,6 +22,16 @@ public class GrupoController {
     private final GrupoService grupoService;
 
     /**
+     * GET /api/grupos - Lista todos os grupos
+     */
+    @GetMapping
+    public ResponseEntity<List<GrupoResponseDTO>> getAllGrupos() {
+        log.info("GET /api/grupos");
+        List<GrupoResponseDTO> grupos = grupoService.getAllGrupos();
+        return ResponseEntity.ok(grupos);
+    }
+
+    /**
      * GET /api/grupos/turma/{turmaId} - Lista grupos de uma turma
      */
     @GetMapping("/turma/{turmaId}")
@@ -59,6 +69,31 @@ public class GrupoController {
         log.info("POST /api/grupos - Body: {}", request);
         GrupoResponseDTO grupo = grupoService.criarGrupo(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(grupo);
+    }
+
+    /**
+     * PUT /api/grupos/{id} - Atualiza grupo
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<GrupoResponseDTO> atualizarGrupo(
+            @PathVariable Integer id,
+            @Valid @RequestBody GrupoRequestDTO request) {
+        log.info("PUT /api/grupos/{} - Body: {}", id, request);
+        GrupoResponseDTO grupo = grupoService.atualizarGrupo(id, request);
+        return ResponseEntity.ok(grupo);
+    }
+
+    /**
+     * PATCH /api/grupos/{id}/ativo - Ativa/Desativa grupo
+     */
+    @PatchMapping("/{id}/ativo")
+    public ResponseEntity<GrupoResponseDTO> toggleAtivo(
+            @PathVariable Integer id,
+            @RequestBody java.util.Map<String, Boolean> body) {
+        log.info("PATCH /api/grupos/{}/ativo - Body: {}", id, body);
+        Boolean ativo = body.get("ativo");
+        GrupoResponseDTO grupo = grupoService.toggleAtivo(id, ativo);
+        return ResponseEntity.ok(grupo);
     }
 
     /**

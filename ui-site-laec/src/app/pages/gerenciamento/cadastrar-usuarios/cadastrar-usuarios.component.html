@@ -7,10 +7,10 @@
         </button>
         <div class="title-section">
           <h1 class="page-title">
-            <i class="pi pi-user-plus"></i>
-            Cadastrar Usuário
+            <i [class]="modoEdicao ? 'pi pi-user-edit' : 'pi pi-user-plus'"></i>
+            {{ modoEdicao ? 'Editar Usuário' : 'Cadastrar Usuário' }}
           </h1>
-          <p class="page-subtitle">Adicione um novo usuário ao sistema</p>
+          <p class="page-subtitle">{{ modoEdicao ? 'Atualize as informações do usuário' : 'Adicione um novo usuário ao sistema' }}</p>
         </div>
       </div>
     </div>
@@ -146,21 +146,70 @@
                 <small class="p-error">{{ getFieldError('periodo') }}</small>
               }
             </div>
+
+            <div class="form-field">
+              <label for="turmaId">Turma</label>
+              <p-select
+                id="turmaId"
+                formControlName="turmaId"
+                [options]="turmasFiltradas"
+                placeholder="Selecione a turma"
+                optionLabel="label"
+                optionValue="value"
+                [class.p-invalid]="isFieldInvalid('turmaId')"
+                styleClass="w-full"
+              />
+              @if (isFieldInvalid('turmaId')) {
+                <small class="p-error">{{ getFieldError('turmaId') }}</small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="grupoId">Grupo</label>
+              <p-select
+                id="grupoId"
+                formControlName="grupoId"
+                [options]="gruposFiltrados"
+                placeholder="Selecione o grupo"
+                optionLabel="label"
+                optionValue="value"
+                [disabled]="!usuarioForm.get('turmaId')?.value"
+                [class.p-invalid]="isFieldInvalid('grupoId')"
+                styleClass="w-full"
+              />
+              @if (isFieldInvalid('grupoId')) {
+                <small class="p-error">{{ getFieldError('grupoId') }}</small>
+              }
+            </div>
           </div>
         </div>
       }
 
       <!-- Senha -->
       <div class="form-section">
-        <h3 class="section-title">Senha de Acesso</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 class="section-title" style="margin: 0;">Senha de Acesso</h3>
+          @if (modoEdicao) {
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <p-checkbox 
+                [ngModel]="alterarSenha" 
+                [ngModelOptions]="{standalone: true}"
+                (onChange)="toggleAlterarSenha()"
+                inputId="alterarSenha"
+                [binary]="true"
+              />
+              <label for="alterarSenha" style="cursor: pointer; margin: 0;">Alterar senha</label>
+            </div>
+          }
+        </div>
         
         <div class="form-grid">
           <div class="form-field">
-            <label for="senha">Senha *</label>
+            <label for="senha">Senha {{ modoEdicao ? '' : '*' }}</label>
             <p-password 
               id="senha" 
               formControlName="senha"
-              placeholder="Mínimo 6 caracteres"
+              [placeholder]="modoEdicao ? 'Deixe em branco para não alterar' : 'Mínimo 6 caracteres'"
               [toggleMask]="true"
               [feedback]="true"
               styleClass="w-full"
@@ -171,11 +220,11 @@
           </div>
 
           <div class="form-field">
-            <label for="confirmarSenha">Confirmar Senha *</label>
+            <label for="confirmarSenha">Confirmar Senha {{ modoEdicao ? '' : '*' }}</label>
             <p-password 
               id="confirmarSenha" 
               formControlName="confirmarSenha"
-              placeholder="Digite a senha novamente"
+              [placeholder]="modoEdicao ? 'Confirme apenas se alterou a senha' : 'Digite a senha novamente'"
               [toggleMask]="true"
               [feedback]="false"
               styleClass="w-full"
@@ -201,10 +250,10 @@
         <button 
           pButton 
           type="submit" 
-          label="Cadastrar Usuário" 
-          icon="pi pi-check"
+          [label]="modoEdicao ? 'Atualizar Usuário' : 'Cadastrar Usuário'"
+          [icon]="modoEdicao ? 'pi pi-save' : 'pi pi-check'"
           [loading]="isLoading"
-          [disabled]="usuarioForm.invalid"
+          [disabled]="usuarioForm.invalid || (modoEdicao && !formularioModificado && !alterarSenha)"
         ></button>
       </div>
     </form>

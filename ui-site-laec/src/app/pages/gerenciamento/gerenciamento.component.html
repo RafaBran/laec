@@ -83,6 +83,77 @@
               <!-- Submenu -->
               @if (item.expanded) {
                 <div class="submenu">
+                  <!-- Navegação hierárquica para Grupos -->
+                  @if (item.id === 'grupos') {
+                    @if (carregandoAnosGrupos) {
+                      <div class="loading-state">
+                        <i class="pi pi-spin pi-spinner"></i>
+                        <span>Carregando...</span>
+                      </div>
+                    } @else {
+                      <!-- Anos -->
+                      @for (ano of anosGrupos; track ano.id) {
+                        <div class="ano-item">
+                          <div 
+                            class="ano-header"
+                            [class.active]="ano.expanded"
+                            (click)="toggleAnoGrupos(ano)">
+                            <div class="item-content">
+                              <i class="pi pi-calendar"></i>
+                              <span>{{ ano.descricao }}</span>
+                              @if (ano.ativo) {
+                                <span class="badge-ativo">Ativo</span>
+                              }
+                            </div>
+                            <i 
+                              class="pi toggle-icon"
+                              [class.pi-chevron-down]="!ano.expanded"
+                              [class.pi-chevron-up]="ano.expanded"></i>
+                          </div>
+
+                          <!-- Semestres -->
+                          @if (ano.expanded) {
+                            <div class="semestres-list">
+                              @for (semestre of ano.semestres; track semestre.id) {
+                                <div class="semestre-item">
+                                  <div 
+                                    class="semestre-header"
+                                    [class.active]="semestre.expanded"
+                                    (click)="toggleSemestreGrupos(semestre)">
+                                    <div class="item-content">
+                                      <i class="pi pi-bookmark"></i>
+                                      <span>{{ semestre.descricao }}</span>
+                                    </div>
+                                    <i 
+                                      class="pi toggle-icon"
+                                      [class.pi-chevron-down]="!semestre.expanded"
+                                      [class.pi-chevron-up]="semestre.expanded"></i>
+                                  </div>
+
+                                  <!-- Turmas -->
+                                  @if (semestre.expanded) {
+                                    <div class="turmas-list">
+                                      @for (turma of semestre.turmas; track turma.id) {
+                                        <div 
+                                          class="turma-item"
+                                          [class.selected]="turmaSelecionadaGrupos?.id === turma.id"
+                                          (click)="selecionarTurmaGrupos(turma)">
+                                          <i class="pi pi-building"></i>
+                                          <span>{{ turma.nome }}</span>
+                                        </div>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                    }
+                  }
+
+                  <!-- Subitems regulares (Cadastrar, etc) -->
                   @for (subItem of item.subItems; track subItem.id) {
                     <div 
                       class="submenu-item"
@@ -168,7 +239,7 @@
                   <h2><i class="pi pi-list"></i> Listar Turmas</h2>
                 </div>
                 <div class="view-content">
-                  <p>Aqui ficará a lista de turmas...</p>
+                  <app-listar-turmas (editarTurmaEvento)="editarTurma($event)" />
                 </div>
               }
               @case ('turmas-cadastrar') {
@@ -176,7 +247,17 @@
                   <h2><i class="pi pi-plus"></i> Cadastrar Nova Turma</h2>
                 </div>
                 <div class="view-content">
-                  <p>Formulário de cadastro de turma...</p>
+                  <app-cadastrar-turmas (voltarParaListagem)="selectAction('turmas', 'listar')" />
+                </div>
+              }
+              @case ('turmas-editar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-pencil"></i> Editar Turma</h2>
+                </div>
+                <div class="view-content">
+                  <app-cadastrar-turmas 
+                    [turmaIdParaEditar]="turmaIdEdicao" 
+                    (voltarParaListagem)="selectAction('turmas', 'listar')" />
                 </div>
               }
               @case ('procedimentos-listar') {
@@ -193,6 +274,38 @@
                 </div>
                 <div class="view-content">
                   <p>Formulário de cadastro de procedimento...</p>
+                </div>
+              }
+              @case ('aulas-praticas-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-list"></i> Listar Aulas Práticas</h2>
+                </div>
+                <div class="view-content">
+                  <p>Aqui ficará a lista de aulas práticas...</p>
+                </div>
+              }
+              @case ('aulas-praticas-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-calendar-plus"></i> Cadastrar Nova Aula Prática</h2>
+                </div>
+                <div class="view-content">
+                  <app-cadastrar-aulas [isEmbedded]="true" />
+                </div>
+              }
+              @case ('grupos-listar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-users"></i> Grupos - {{ turmaSelecionadaGrupos?.nome }}</h2>
+                </div>
+                <div class="view-content">
+                  <app-listar-grupos [turmaId]="turmaSelecionadaGrupos?.id" />
+                </div>
+              }
+              @case ('grupos-cadastrar') {
+                <div class="view-header">
+                  <h2><i class="pi pi-plus"></i> Cadastrar Novo Grupo</h2>
+                </div>
+                <div class="view-content">
+                  <p>Formulário de cadastro de grupo...</p>
                 </div>
               }
               @default {

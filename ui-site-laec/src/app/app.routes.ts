@@ -49,6 +49,21 @@ export const routes: Routes = [
     canActivate: [staffGuard]
   },
   {
+    path: 'gerenciamento/cadastrar-turmas',
+    loadComponent: () => import('./pages/gerenciamento/cadastrar-turmas/cadastrar-turmas.component').then(m => m.CadastrarTurmasComponent),
+    canActivate: [staffGuard]
+  },
+  {
+    path: 'gerenciamento/listar-turmas',
+    loadComponent: () => import('./pages/gerenciamento/listar-turmas/listar-turmas.component').then(m => m.ListarTurmasComponent),
+    canActivate: [staffGuard]
+  },
+  {
+    path: 'gerenciamento/editar-turma/:id',
+    loadComponent: () => import('./pages/gerenciamento/cadastrar-turmas/cadastrar-turmas.component').then(m => m.CadastrarTurmasComponent),
+    canActivate: [staffGuard]
+  },
+  {
     path: 'gerenciar-aulas',
     loadComponent: () => import('./pages/gerenciar-aulas/gerenciar-aulas.component').then(m => m.GerenciarAulasComponent),
     canActivate: [staffGuard]

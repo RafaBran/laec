@@ -24,4 +24,18 @@ public class GrupoResponseDTO {
     private Boolean ativo;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    
+    // Dados da turma (opcional)
+    private TurmaSimplificadaDTO turma;
+    
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class TurmaSimplificadaDTO {
+        private Integer turmaId;
+        private String nomeTurma;
+        private Integer ano;
+        private String semestre;
+    }
 }

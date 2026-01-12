@@ -12,14 +12,12 @@
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuários"
       [rowsPerPageOptions]="[10, 25, 50]"
-      [globalFilterFields]="['nome', 'email', 'username', 'tipo', 'curso']"
-      styleClass="p-datatable-gridlines"
+      [globalFilterFields]="['nome', 'email', 'username', 'tipo', 'turma']"
     >
       <ng-template pTemplate="caption">
         <div class="table-header">
           <h2><i class="pi pi-users"></i> Gerenciar Usuários</h2>
           <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
             <input
               pInputText
               type="text"
@@ -33,64 +31,30 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="id">
-            ID <p-sortIcon field="id" />
+          <th style="width: 100px; text-align: center;">Ações</th>
+          <th pSortableColumn="id" style="width: 60px; white-space: nowrap; text-align: center;">
+            <p-sortIcon field="id" /> ID
           </th>
-          <th pSortableColumn="nome">
-            Nome <p-sortIcon field="nome" />
+          <th pSortableColumn="nome" style="white-space: nowrap; text-align: center;">
+            <p-sortIcon field="nome" /> Nome
           </th>
-          <th pSortableColumn="email">
-            Email <p-sortIcon field="email" />
+          <th pSortableColumn="email" style="white-space: nowrap; text-align: center;">
+            <p-sortIcon field="email" /> Email
           </th>
-          <th pSortableColumn="username">
-            Username <p-sortIcon field="username" />
+          <th pSortableColumn="username" style="width: 150px; white-space: nowrap; text-align: center;">
+            <p-sortIcon field="username" /> Username
           </th>
-          <th pSortableColumn="tipo">
-            Tipo <p-sortIcon field="tipo" />
+          <th pSortableColumn="tipo" style="width: 120px; white-space: nowrap; text-align: center;">
+            <p-sortIcon field="tipo" /> Tipo
           </th>
-          <th pSortableColumn="curso">
-            Curso <p-sortIcon field="curso" />
+          <th pSortableColumn="turma" style="width: 150px; white-space: nowrap; text-align: center;">
+            <p-sortIcon field="turma" /> Turma
           </th>
-          <th pSortableColumn="ativo">
-            Status <p-sortIcon field="ativo" />
-          </th>
-          <th style="width: 200px">Ações</th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-usuario>
         <tr>
-          <td>{{ usuario.id }}</td>
-          <td>
-            <div class="user-info">
-              @if (usuario.fotoUrl) {
-                <img [src]="usuario.fotoUrl" [alt]="usuario.nome" class="user-avatar" />
-              } @else {
-                <div class="user-avatar-placeholder">
-                  {{ usuario.nome.charAt(0).toUpperCase() }}
-                </div>
-              }
-              <span>{{ usuario.nome }}</span>
-            </div>
-          </td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.username }}</td>
-          <td>
-            <p-tag [value]="usuario.tipo" [severity]="getSeverity(usuario.tipo)" />
-          </td>
-          <td>
-            @if (usuario.curso) {
-              <span>{{ usuario.curso }} - {{ usuario.periodo }}º</span>
-            } @else {
-              <span class="text-muted">-</span>
-            }
-          </td>
-          <td>
-            <p-tag
-              [value]="usuario.ativo ? 'Ativo' : 'Inativo'"
-              [severity]="getStatusSeverity(usuario.ativo)"
-            />
-          </td>
           <td>
             <div class="action-buttons">
               <button
@@ -101,26 +65,7 @@
                 tooltipPosition="top"
                 (click)="editarUsuario(usuario)"
               ></button>
-              @if (usuario.ativo) {
-                <button
-                  pButton
-                  icon="pi pi-ban"
-                  class="p-button-rounded p-button-text p-button-warning"
-                  pTooltip="Desativar"
-                  tooltipPosition="top"
-                  (click)="confirmarDesativar(usuario)"
-                ></button>
-              } @else {
-                <button
-                  pButton
-                  icon="pi pi-check-circle"
-                  class="p-button-rounded p-button-text p-button-success"
-                  pTooltip="Ativar"
-                  tooltipPosition="top"
-                  (click)="confirmarAtivar(usuario)"
-                ></button>
-              }
-              <button
+             <button
                 pButton
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-text p-button-danger"
@@ -130,12 +75,28 @@
               ></button>
             </div>
           </td>
+          <td>{{ usuario.id }}</td>
+          <td>
+            <div class="user-info">
+              <span>{{ usuario.nome }}</span>
+            </div>
+          </td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.username }}</td>
+          <td style="text-align: center;">{{ usuario.tipo }}</td>
+          <td style="text-align: center;">
+            @if (usuario.nomeTurma) {
+              <span>{{ usuario.nomeTurma }}</span>
+            } @else {
+              <span class="text-muted">Sem turma</span>
+            }
+          </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="8" class="text-center">
+          <td colspan="7" class="text-center">
             <div class="empty-message">
               <i class="pi pi-users" style="font-size: 3rem; color: #cbd5e1;"></i>
               <p>Nenhum usuário cadastrado</p>
@@ -146,7 +107,7 @@
 
       <ng-template pTemplate="loadingbody">
         <tr>
-          <td colspan="8">
+          <td colspan="7">
             <div class="loading-message">
               <i class="pi pi-spin pi-spinner" style="font-size: 2rem;"></i>
               <p>Carregando usuários...</p>
@@ -157,3 +118,24 @@
     </p-table>
   </div>
 </div>
+
+<!-- Dialog de Edição -->
+<p-dialog 
+  [(visible)]="displayEditDialog"
+  [modal]="true"
+  [style]="{width: '50vw'}"
+  [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="usuarioParaEditar = undefined"
+>
+  @if (usuarioParaEditar) {
+    <app-cadastrar-usuarios
+      [isEmbedded]="true"
+      [modoEdicao]="true"
+      [usuarioParaEditar]="usuarioParaEditar"
+      (usuarioCadastrado)="onUsuarioEditado()"
+      (cancelado)="onCancelarEdicao()"
+    />
+  }
+</p-dialog>

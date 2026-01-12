@@ -21,6 +21,10 @@ public class UsuarioDTO {
     private String curso;
     private String periodo;
     private String telefone;
+    private Integer grupoId;
+    private Integer numeroGrupo;
+    private String nomeGrupo;
+    private String nomeTurma;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

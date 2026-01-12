@@ -24,8 +24,10 @@ public class UsuarioService {
 
     // Listar todos os usuários
     public List<UsuarioDTO> listarTodos() {
-        return usuarioRepository.findAll().stream()
-                .map(this::convertToDTO)
+        List<Object[]> results = usuarioRepository.findAllWithGrupoAndTurma();
+        
+        return results.stream()
+                .map(this::convertArrayToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -73,6 +75,7 @@ public class UsuarioService {
         usuario.setCurso(dto.getCurso());
         usuario.setPeriodo(dto.getPeriodo());
         usuario.setTelefone(dto.getTelefone());
+        usuario.setGrupoId(dto.getGrupoId());
         usuario.setAtivo(true);
 
         Usuario salvo = usuarioRepository.save(usuario);
@@ -126,6 +129,9 @@ public class UsuarioService {
         if (dto.getTelefone() != null) {
             usuario.setTelefone(dto.getTelefone());
         }
+        if (dto.getGrupoId() != null) {
+            usuario.setGrupoId(dto.getGrupoId());
+        }
 
         Usuario atualizado = usuarioRepository.save(usuario);
         return convertToDTO(atualizado);
@@ -173,8 +179,51 @@ public class UsuarioService {
         dto.setCurso(usuario.getCurso());
         dto.setPeriodo(usuario.getPeriodo());
         dto.setTelefone(usuario.getTelefone());
+        dto.setGrupoId(usuario.getGrupoId());
+        dto.setNumeroGrupo(usuario.getNumeroGrupo());
+        dto.setNomeGrupo(usuario.getNomeGrupo());
+        dto.setNomeTurma(usuario.getNomeTurma());
         dto.setCreatedAt(usuario.getCreatedAt());
         dto.setUpdatedAt(usuario.getUpdatedAt());
         return dto;
+    }
+    
+    // Converter array de resultado de query nativa para DTO
+    private UsuarioDTO convertArrayToDTO(Object[] row) {
+        UsuarioDTO dto = new UsuarioDTO();
+        
+        // Ordem: id, nome, email, username, tipo, ativo, foto_url, curso, periodo, telefone, grupo_id, created_at, updated_at, numero_grupo, nome_grupo, nome_turma
+        dto.setId(convertToInteger(row[0]));
+        dto.setNome((String) row[1]);
+        dto.setEmail((String) row[2]);
+        dto.setUsername((String) row[3]);
+        dto.setTipo((String) row[4]);
+        dto.setAtivo(convertToBoolean(row[5]));
+        dto.setFotoUrl((String) row[6]);
+        dto.setCurso((String) row[7]);
+        dto.setPeriodo((String) row[8]);
+        dto.setTelefone((String) row[9]);
+        dto.setGrupoId(convertToInteger(row[10]));
+        dto.setCreatedAt(row[11] != null ? ((java.sql.Timestamp) row[11]).toLocalDateTime() : null);
+        dto.setUpdatedAt(row[12] != null ? ((java.sql.Timestamp) row[12]).toLocalDateTime() : null);
+        dto.setNumeroGrupo(convertToInteger(row[13]));
+        dto.setNomeGrupo((String) row[14]);
+        dto.setNomeTurma((String) row[15]);
+        return dto;
+    }
+    
+    // Helper para converter para Integer de forma segura
+    private Integer convertToInteger(Object obj) {
+        if (obj == null) return null;
+        if (obj instanceof Integer) return (Integer) obj;
+        if (obj instanceof Number) return ((Number) obj).intValue();
+        return null;
+    }
+    
+    // Helper para converter para Boolean de forma segura
+    private Boolean convertToBoolean(Object obj) {
+        if (obj == null) return null;
+        if (obj instanceof Boolean) return (Boolean) obj;
+        return Boolean.valueOf(obj.toString());
     }
 }

@@ -38,6 +38,9 @@ public class Usuario {
 
     private String telefone;
 
+    @Column(name = "grupo_id")
+    private Integer grupoId;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -154,6 +157,14 @@ public class Usuario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public Integer getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(Integer grupoId) {
+        this.grupoId = grupoId;
     }
 
     public LocalDateTime getCreatedAt() {

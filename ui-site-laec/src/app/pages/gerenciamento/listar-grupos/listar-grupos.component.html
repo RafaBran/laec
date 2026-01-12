@@ -1,0 +1,129 @@
+<div class="listar-grupos-container">
+  <p-toast />
+  <p-confirmDialog />
+
+  @if (!turmaId) {
+    <div class="empty-state">
+      <i class="pi pi-info-circle"></i>
+      <h3>Nenhuma turma selecionada</h3>
+      <p>Selecione uma turma no menu lateral para visualizar seus grupos</p>
+    </div>
+  } @else {
+    <div class="card">
+    <p-table 
+      #dt
+      [value]="gruposFiltrados" 
+      [loading]="carregando"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} grupos"
+      styleClass="p-datatable-sm p-datatable-striped">
+      
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <h2><i class="pi pi-users"></i> Gerenciar Grupos</h2>
+          <span class="p-input-icon-left">
+            <input 
+              type="text" 
+              pInputText 
+              [(ngModel)]="filtroBusca"
+              (ngModelChange)="aplicarFiltros()"
+              placeholder="Buscar grupos..."
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 20%; text-align: center;">Ações</th>
+          <th pSortableColumn="numeroGrupo" style="width: 18%; text-align: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+              <p-sortIcon field="numeroGrupo" />
+              <span>Número</span>
+            </div>
+          </th>
+          <th pSortableColumn="prioridadeAtual" style="width: 18%; text-align: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+              <p-sortIcon field="prioridadeAtual" />
+              <span>Prioridade</span>
+            </div>
+          </th>
+          <th pSortableColumn="totalFaltas" style="width: 18%; text-align: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+              <p-sortIcon field="totalFaltas" />
+              <span>Faltas</span>
+            </div>
+          </th>
+          <th style="width: 26%; text-align: center;">Turnos</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-grupo>
+        <tr>
+          <td style="text-align: center;">
+            <div class="action-buttons">
+              <button
+                pButton
+                icon="pi pi-pencil" 
+                (click)="editarGrupo(grupo)"
+                class="p-button-rounded p-button-text p-button-info"
+                pTooltip="Editar"
+                tooltipPosition="top">
+              </button>
+              <button
+                pButton
+                icon="pi pi-trash" 
+                (click)="confirmarExclusao(grupo)"
+                class="p-button-rounded p-button-text p-button-danger"
+                pTooltip="Excluir"
+                tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+          <td style="text-align: center;">
+            <strong>Grupo {{ grupo.numeroGrupo }}</strong>
+            @if (grupo.nomeGrupo) {
+              <br><small class="text-muted">{{ grupo.nomeGrupo }}</small>
+            }
+          </td>
+          <td style="text-align: center;">
+            <span class="prioridade-badge" [class.prioridade-alta]="grupo.prioridadeAtual >= 10">
+              {{ grupo.prioridadeAtual }}
+            </span>
+          </td>
+          <td style="text-align: center;">
+            <span class="faltas-badge" [class.tem-faltas]="grupo.totalFaltas > 0">
+              <i class="pi pi-exclamation-triangle" *ngIf="grupo.totalFaltas > 0"></i>
+              {{ grupo.totalFaltas }}
+            </span>
+          </td>
+          <td style="text-align: center;">
+            <div class="turnos-info">
+              <span class="turno-badge turno-1" title="Primeiro Turno">
+                1º: {{ grupo.totalPrimeiroTurno || 0 }}
+              </span>
+              <span class="turno-badge turno-2" title="Segundo Turno">
+                2º: {{ grupo.totalSegundoTurno || 0 }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center;">
+            <div class="empty-message">
+              <i class="pi pi-inbox" style="font-size: 3rem; color: #cbd5e1;"></i>
+              <p>Nenhum grupo encontrado</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </div>
+  }
+</div>

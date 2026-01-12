@@ -31,4 +31,5 @@ public class CreateUsuarioDTO {
     private String curso;
     private String periodo;
     private String telefone;
+    private Integer grupoId;
 }

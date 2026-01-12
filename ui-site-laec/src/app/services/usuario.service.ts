@@ -12,6 +12,10 @@ export interface Usuario {
   telefone?: string;
   curso?: string;
   periodo?: string;
+  grupoId?: number;
+  numeroGrupo?: number;
+  nomeGrupo?: string;
+  nomeTurma?: string;
   fotoUrl?: string;
   createdAt: string;
   updatedAt: string;

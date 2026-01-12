@@ -137,6 +137,157 @@
               }
             }
           }
+
+          // Estilos para navegação hierárquica de grupos
+          .loading-state {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+            justify-content: center;
+          }
+
+          .ano-item {
+            margin-bottom: 0.5rem;
+
+            .ano-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0.75rem 0.875rem;
+              cursor: pointer;
+              border-radius: 6px;
+              transition: all 0.2s ease;
+              background: #f9fafb;
+              font-weight: 600;
+              font-size: 0.875rem;
+
+              &:hover {
+                background: #f3f4f6;
+              }
+
+              &.active {
+                background: #e5e7eb;
+              }
+
+              .item-content {
+                display: flex;
+                align-items: center;
+                gap: 0.625rem;
+
+                i {
+                  color: #722f37;
+                }
+
+                .badge-ativo {
+                  background: #10b981;
+                  color: white;
+                  font-size: 0.65rem;
+                  padding: 0.125rem 0.375rem;
+                  border-radius: 4px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  margin-left: 0.25rem;
+                }
+              }
+
+              .toggle-icon {
+                font-size: 0.75rem;
+                color: #9ca3af;
+              }
+            }
+
+            .semestres-list {
+              padding-left: 1rem;
+              margin-top: 0.25rem;
+
+              .semestre-item {
+                margin-bottom: 0.25rem;
+
+                .semestre-header {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 0.625rem 0.75rem;
+                  cursor: pointer;
+                  border-radius: 6px;
+                  transition: all 0.2s ease;
+                  background: #fafafa;
+                  font-size: 0.85rem;
+
+                  &:hover {
+                    background: #f3f4f6;
+                  }
+
+                  &.active {
+                    background: #e5e7eb;
+                  }
+
+                  .item-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.625rem;
+
+                    i {
+                      color: #722f37;
+                      font-size: 0.85rem;
+                    }
+                  }
+
+                  .toggle-icon {
+                    font-size: 0.7rem;
+                    color: #9ca3af;
+                  }
+                }
+
+                .turmas-list {
+                  padding-left: 1rem;
+                  margin-top: 0.25rem;
+
+                  .turma-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.625rem 0.875rem;
+                    cursor: pointer;
+                    border-radius: 6px;
+                    transition: all 0.2s ease;
+                    background: white;
+                    border: 1px solid #e5e7eb;
+                    margin-bottom: 0.25rem;
+                    font-size: 0.825rem;
+
+                    i {
+                      font-size: 0.8rem;
+                      color: #6b7280;
+                    }
+
+                    &:hover {
+                      background: rgba(114, 47, 55, 0.05);
+                      border-color: #722f37;
+
+                      i {
+                        color: #722f37;
+                      }
+                    }
+
+                    &.selected {
+                      background: linear-gradient(135deg, #722f37 0%, #8b1e1e 100%);
+                      color: white;
+                      border-color: #722f37;
+                      font-weight: 600;
+
+                      i {
+                        color: white;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -187,7 +338,7 @@
         border-bottom: 2px solid #e5e7eb;
 
         h2 {
-          margin: 0;
+          margin: 0 0 0.5rem 0;
           font-size: 1.75rem;
           color: #722f37;
           display: flex;
@@ -198,6 +349,54 @@
             font-size: 1.5rem;
           }
         }
+
+        .turma-info-header {
+          margin: 0.5rem 0 0 0;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #6b7280;
+          font-size: 0.95rem;
+
+          i {
+            color: #722f37;
+          }
+
+          strong {
+            color: #1f2937;
+          }
+        }
+      }
+
+      .view-content {
+        .empty-selection {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 400px;
+          color: #9ca3af;
+          text-align: center;
+
+          i {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+          }
+
+          h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.4rem;
+            color: #6b7280;
+          }
+
+          p {
+            margin: 0;
+            font-size: 1rem;
+            color: #9ca3af;
+          }
+        }
+      }
       }
 
       .view-content {
@@ -662,5 +861,4 @@
     opacity: 1;
     transform: scale(1);
   }
-}
 }

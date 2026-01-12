@@ -9,7 +9,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CadastrarUsuariosComponent } from '../cadastrar-usuarios/cadastrar-usuarios.component';
 
 @Component({
   selector: 'app-listar-usuarios',
@@ -23,7 +25,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     InputTextModule,
     ConfirmDialogModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    DialogModule,
+    CadastrarUsuariosComponent
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './listar-usuarios.component.html',
@@ -33,18 +37,24 @@ export class ListarUsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
   loading: boolean = false;
   searchValue: string = '';
+  displayEditDialog: boolean = false;
+  usuarioParaEditar?: Usuario;
 
   constructor(
     private usuarioService: UsuarioService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) {}
+  ) {
+    console.log('[ListarUsuarios] Constructor chamado');
+  }
 
   ngOnInit() {
+    console.log('[ListarUsuarios] ngOnInit chamado');
     this.carregarUsuarios();
   }
 
   carregarUsuarios() {
+    console.log('[ListarUsuarios] carregarUsuarios chamado');
     this.loading = true;
     this.usuarioService.listarTodos().subscribe({
       next: (response: Usuario[]) => {
@@ -188,12 +198,24 @@ export class ListarUsuariosComponent implements OnInit {
   }
 
   editarUsuario(usuario: Usuario) {
-    // TODO: Implementar edição
+    this.usuarioParaEditar = usuario;
+    this.displayEditDialog = true;
+  }
+
+  onUsuarioEditado() {
+    this.displayEditDialog = false;
+    this.usuarioParaEditar = undefined;
+    this.carregarUsuarios();
     this.messageService.add({
-      severity: 'info',
-      summary: 'Em desenvolvimento',
-      detail: 'Funcionalidade de edição será implementada em breve'
+      severity: 'success',
+      summary: 'Sucesso',
+      detail: 'Usuário atualizado com sucesso'
     });
+  }
+
+  onCancelarEdicao() {
+    this.displayEditDialog = false;
+    this.usuarioParaEditar = undefined;
   }
 
   clear(table: any) {

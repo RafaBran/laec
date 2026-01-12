@@ -45,6 +45,18 @@ public class Usuario {
 
     private String telefone;
 
+    @Column(name = "grupo_id")
+    private Integer grupoId;
+
+    @Transient
+    private Integer numeroGrupo;
+
+    @Transient
+    private String nomeGrupo;
+
+    @Transient
+    private String nomeTurma;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

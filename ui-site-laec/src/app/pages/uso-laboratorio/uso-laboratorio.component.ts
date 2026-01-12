@@ -135,10 +135,10 @@ export class UsoLaboratorioComponent implements OnInit {
           tipo: 'primeiro',
           descricao: '1º Semestre',
           expanded: false,
-          turmas: turmasPrimeiro.map(t => ({
+          turmas: this.ordenarTurmasPorDiaSemana(turmasPrimeiro.map(t => ({
             ...TurmaUtils.converterParaDisplay(t),
             expanded: false
-          }))
+          })))
         });
       }
 
@@ -151,10 +151,10 @@ export class UsoLaboratorioComponent implements OnInit {
           tipo: 'segundo',
           descricao: '2º Semestre',
           expanded: false,
-          turmas: turmasSegundo.map(t => ({
+          turmas: this.ordenarTurmasPorDiaSemana(turmasSegundo.map(t => ({
             ...TurmaUtils.converterParaDisplay(t),
             expanded: false
-          }))
+          })))
         });
       }
 
@@ -170,6 +170,25 @@ export class UsoLaboratorioComponent implements OnInit {
 
     // Ordenar por ano (mais recente primeiro)
     return anos.sort((a, b) => b.ano - a.ano);
+  }
+
+  /**
+   * Ordena turmas por dia da semana (segunda a sexta)
+   */
+  private ordenarTurmasPorDiaSemana(turmas: TurmaUI[]): TurmaUI[] {
+    const ordemDias: { [key: string]: number } = {
+      'Segunda-feira': 1,
+      'Terça-feira': 2,
+      'Quarta-feira': 3,
+      'Quinta-feira': 4,
+      'Sexta-feira': 5
+    };
+
+    return turmas.sort((a, b) => {
+      const ordenA = ordemDias[a.dia_semana] || 999;
+      const ordenB = ordemDias[b.dia_semana] || 999;
+      return ordenA - ordenB;
+    });
   }
 
   // Toggle ano

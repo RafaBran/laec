@@ -1,175 +1,158 @@
-<div class="cadastrar-aulas-page">
-  <p-toast></p-toast>
-  
-  <div class="page-header">
-    <button 
-      pButton 
-      icon="pi pi-arrow-left" 
-      class="p-button-text p-button-secondary back-button"
-      (click)="voltar()">
-    </button>
-    
-    <div class="header-content">
-      <h1 class="page-title">
-        <i class="pi pi-calendar-plus"></i>
-        Cadastrar Aulas
-      </h1>
-      <p class="page-subtitle">
-        Registre novas aulas práticas no laboratório
-      </p>
+<div class="cadastrar-aulas-page" [class.embedded]="isEmbedded">
+  @if (!isEmbedded) {
+    <div class="page-header">
+      <div class="header-content">
+        <button pButton class="p-button-text back-button" (click)="onCancel()">
+          <i class="pi pi-arrow-left"></i>
+        </button>
+        <div class="title-section">
+          <h1 class="page-title">
+            <i class="pi pi-calendar-plus"></i>
+            Cadastrar Aula Prática
+          </h1>
+          <p class="page-subtitle">Agende uma nova aula prática no laboratório</p>
+        </div>
+      </div>
     </div>
-  </div>
+  }
 
   <div class="form-container">
-    <div class="form-card">
-      <h2 class="form-title">Nova Aula</h2>
-      
-      <div class="form-grid">
-        <div class="form-field">
-          <label for="disciplina">Disciplina *</label>
-          <input 
-            pInputText 
-            id="disciplina" 
-            [(ngModel)]="novaAula.disciplina"
-            placeholder="Ex: Psicologia Experimental" />
-        </div>
+    @if (errorMessage) {
+      <p-message severity="error" [text]="errorMessage" />
+    }
 
-        <div class="form-field">
-          <label for="professor">Professor *</label>
-          <input 
-            pInputText 
-            id="professor" 
-            [(ngModel)]="novaAula.professor"
-            placeholder="Nome do professor" />
-        </div>
+    @if (successMessage) {
+      <p-message severity="success" [text]="successMessage" />
+    }
 
-        <div class="form-field">
-          <label for="turma">Turma *</label>
-          <input 
-            pInputText 
-            id="turma" 
-            [(ngModel)]="novaAula.turma"
-            placeholder="Ex: PSI-5A" />
-        </div>
+    <form [formGroup]="aulaForm" (ngSubmit)="onSubmit()" class="aula-form">
+      <!-- Informações Básicas -->
+      <div class="form-section">
+        <h3 class="section-title">Informações da Aula</h3>
+        
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label for="turmaId">Turma *</label>
+            <p-select
+              id="turmaId"
+              formControlName="turmaId"
+              [options]="turmasFiltradas"
+              placeholder="Selecione a turma"
+              optionLabel="label"
+              optionValue="value"
+              [class.p-invalid]="isFieldInvalid('turmaId')"
+              styleClass="w-full"
+            />
+            @if (isFieldInvalid('turmaId')) {
+              <small class="p-error">{{ getFieldError('turmaId') }}</small>
+            }
+          </div>
 
-        <div class="form-field">
-          <label for="numeroAlunos">Nº de Alunos *</label>
-          <input 
-            pInputText 
-            id="numeroAlunos" 
-            type="number"
-            [(ngModel)]="novaAula.numeroAlunos"
-            placeholder="0" />
-        </div>
+          <div class="form-field">
+            <label for="dataAula">Data da Aula *</label>
+            <p-datepicker
+              id="dataAula"
+              formControlName="dataAula"
+              [showIcon]="true"
+              [iconDisplay]="'input'"
+              dateFormat="dd/mm/yy"
+              placeholder="Selecione a data"
+              [class.p-invalid]="isFieldInvalid('dataAula')"
+              styleClass="w-full"
+            />
+            @if (isFieldInvalid('dataAula')) {
+              <small class="p-error">{{ getFieldError('dataAula') }}</small>
+            }
+          </div>
 
-        <div class="form-field">
-          <label for="data">Data *</label>
-          <p-datepicker 
-            id="data"
-            [(ngModel)]="novaAula.data"
-            dateFormat="dd/mm/yy"
-            [showIcon]="true"
-            placeholder="Selecione a data">
-          </p-datepicker>
-        </div>
-
-        <div class="form-field">
-          <label for="horario">Horário *</label>
-          <p-select 
-            id="horario"
-            [(ngModel)]="novaAula.horario"
-            [options]="horarios"
-            placeholder="Selecione o horário">
-          </p-select>
-        </div>
-
-        <div class="form-field full-width">
-          <label for="observacoes">Observações</label>
-          <input 
-            pInputText 
-            id="observacoes" 
-            [(ngModel)]="novaAula.observacoes"
-            placeholder="Informações adicionais (opcional)" />
+          <div class="form-field">
+            <label for="numeroAula">Número da Aula</label>
+            <input 
+              pInputText 
+              id="numeroAula" 
+              formControlName="numeroAula"
+              type="number"
+              placeholder="Ex: 1, 2, 3..."
+              [class.p-invalid]="isFieldInvalid('numeroAula')"
+            />
+            @if (isFieldInvalid('numeroAula')) {
+              <small class="p-error">{{ getFieldError('numeroAula') }}</small>
+            }
+          </div>
         </div>
       </div>
 
+      <!-- Conteúdo da Aula -->
+      <div class="form-section">
+        <h3 class="section-title">Conteúdo</h3>
+        
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label for="tema">Tema *</label>
+            <input 
+              pInputText 
+              id="tema" 
+              formControlName="tema"
+              placeholder="Ex: Anatomia Humana - Sistema Respiratório"
+              [class.p-invalid]="isFieldInvalid('tema')"
+            />
+            @if (isFieldInvalid('tema')) {
+              <small class="p-error">{{ getFieldError('tema') }}</small>
+            }
+          </div>
+
+          <div class="form-field full-width">
+            <label for="procedimento">Procedimento</label>
+            <input 
+              pInputText 
+              id="procedimento" 
+              formControlName="procedimento"
+              placeholder="Ex: Dissecação de órgãos"
+              [class.p-invalid]="isFieldInvalid('procedimento')"
+            />
+            @if (isFieldInvalid('procedimento')) {
+              <small class="p-error">{{ getFieldError('procedimento') }}</small>
+            }
+          </div>
+
+          <div class="form-field full-width">
+            <label for="observacoes">Observações</label>
+            <textarea 
+              pTextarea
+              id="observacoes" 
+              formControlName="observacoes"
+              rows="4"
+              placeholder="Informações adicionais sobre a aula..."
+              [class.p-invalid]="isFieldInvalid('observacoes')"
+            ></textarea>
+            @if (isFieldInvalid('observacoes')) {
+              <small class="p-error">{{ getFieldError('observacoes') }}</small>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
       <div class="form-actions">
         <button 
           pButton 
-          label="Limpar" 
+          type="button" 
+          label="Cancelar" 
           icon="pi pi-times"
-          class="p-button-outlined p-button-secondary"
-          (click)="limparFormulario()">
-        </button>
+          class="p-button-secondary"
+          (click)="onCancel()"
+          [disabled]="isLoading"
+        ></button>
         <button 
           pButton 
-          label="Cadastrar Aula" 
+          type="submit" 
+          label="Cadastrar Aula"
           icon="pi pi-check"
-          (click)="adicionarAula()">
-        </button>
+          [loading]="isLoading"
+          [disabled]="aulaForm.invalid"
+        ></button>
       </div>
-    </div>
-  </div>
-
-  <div class="table-container">
-    <h2 class="table-title">Aulas Cadastradas</h2>
-    
-    <p-table 
-      [value]="aulas" 
-      [tableStyle]="{ 'min-width': '50rem' }"
-      [paginator]="true"
-      [rows]="10"
-      [showCurrentPageReport]="true"
-      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} aulas"
-      styleClass="p-datatable-striped">
-      
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Disciplina</th>
-          <th>Professor</th>
-          <th>Data</th>
-          <th>Horário</th>
-          <th>Turma</th>
-          <th>Alunos</th>
-          <th>Ações</th>
-        </tr>
-      </ng-template>
-      
-      <ng-template pTemplate="body" let-aula>
-        <tr>
-          <td>{{ aula.disciplina }}</td>
-          <td>{{ aula.professor }}</td>
-          <td>{{ aula.data | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ aula.horario }}</td>
-          <td>{{ aula.turma }}</td>
-          <td>{{ aula.numeroAlunos }}</td>
-          <td>
-            <button 
-              pButton 
-              icon="pi pi-pencil" 
-              class="p-button-rounded p-button-text p-button-warning"
-              (click)="editarAula(aula)"
-              pTooltip="Editar">
-            </button>
-            <button 
-              pButton 
-              icon="pi pi-trash" 
-              class="p-button-rounded p-button-text p-button-danger"
-              (click)="excluirAula(aula)"
-              pTooltip="Excluir">
-            </button>
-          </td>
-        </tr>
-      </ng-template>
-      
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7" class="empty-message">
-            <i class="pi pi-inbox"></i>
-            <p>Nenhuma aula cadastrada ainda</p>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+    </form>
   </div>
 </div>
+

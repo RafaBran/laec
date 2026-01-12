@@ -1,0 +1,101 @@
+<div class="listar-turmas-container">
+  <p-toast />
+  <p-confirmDialog />
+
+  <div class="card">
+    <p-table 
+      #dt
+      [value]="turmasFiltradas" 
+      [loading]="carregando"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} turmas"
+      styleClass="p-datatable-sm p-datatable-striped">
+      
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+          <h2><i class="pi pi-building"></i> Gerenciar Turmas</h2>
+          <span class="p-input-icon-left">
+            <input 
+              type="text" 
+              pInputText 
+              [(ngModel)]="filtroBusca"
+              (ngModelChange)="aplicarFiltros()"
+              placeholder="Buscar turmas..."
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 20%; text-align: center;">Ações</th>
+          <th pSortableColumn="nomeTurma">
+            <p-sortIcon field="nomeTurma" /> Nome da Turma
+          </th>
+          <!-- <th pSortableColumn="ano" style="width: 80px; text-align: center;">
+            <p-sortIcon field="ano" /> Ano
+          </th>
+          <th pSortableColumn="semestre" style="width: 120px; text-align: center;">
+            <p-sortIcon field="semestre" /> Semestre
+          </th>
+          <th pSortableColumn="turno" style="width: 120px; text-align: center;">
+            <p-sortIcon field="turno" /> Turno
+          </th>
+          <th pSortableColumn="unidade" style="width: 120px; text-align: center;">
+            <p-sortIcon field="unidade" /> Unidade
+          </th>
+          <th pSortableColumn="diaSemana" style="width: 140px; text-align: center;">
+            <p-sortIcon field="diaSemana" /> Dia da Semana
+          </th> -->
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-turma>
+        <tr>
+          <td>
+            <div class="action-buttons">
+              <button
+                pButton
+                icon="pi pi-pencil" 
+                (click)="editarTurma(turma)"
+                class="p-button-rounded p-button-text p-button-info"
+                pTooltip="Editar"
+                tooltipPosition="top">
+              </button>
+              <button
+                pButton
+                icon="pi pi-trash" 
+                (click)="confirmarExclusao(turma)"
+                class="p-button-rounded p-button-text p-button-danger"
+                pTooltip="Excluir"
+                tooltipPosition="top">
+              </button>
+            </div>
+          </td>
+          <td>
+            <strong>{{ turma.nomeTurma }}</strong>
+          </td>
+          <!-- <td style="text-align: center;">{{ turma.ano }}</td>
+          <td style="text-align: center;">{{ formatarSemestre(turma.semestre) }}</td>
+          <td style="text-align: center;">{{ formatarTurno(turma.turno) }}</td>
+          <td style="text-align: center;">{{ formatarUnidade(turma.unidade) }}</td>
+          <td style="text-align: center;">{{ formatarDiaSemana(turma.diaSemana) }}</td> -->
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center;">
+            <div class="empty-message">
+              <i class="pi pi-inbox" style="font-size: 3rem; color: #cbd5e1;"></i>
+              <p>Nenhuma turma encontrada</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

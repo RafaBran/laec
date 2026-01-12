@@ -29,6 +29,14 @@ public class GrupoService {
     private static final int MAX_GRUPOS_POR_TURNO = 8;
 
     @Transactional(readOnly = true)
+    public List<GrupoResponseDTO> getAllGrupos() {
+        log.info("Buscando todos os grupos");
+        return grupoRepository.findAll().stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<GrupoResponseDTO> getGruposByTurma(Integer turmaId) {
         log.info("Buscando grupos da turma: {}", turmaId);
         return grupoRepository.findByTurma_TurmaIdAndAtivoTrue(turmaId).stream()
@@ -70,6 +78,47 @@ public class GrupoService {
         log.info("Grupo criado: {}", saved.getGrupoId());
 
         return toResponseDTO(saved);
+    }
+
+    @Transactional
+    public GrupoResponseDTO atualizarGrupo(Integer id, GrupoRequestDTO request) {
+        log.info("Atualizando grupo: {}", id);
+        
+        Grupo grupo = grupoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Grupo não encontrado: " + id));
+
+        // Verificar se a turma existe
+        Turma turma = turmaRepository.findById(request.getTurmaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Turma não encontrada: " + request.getTurmaId()));
+
+        // Verificar duplicação de número de grupo (exceto o próprio grupo)
+        if (!grupo.getNumeroGrupo().equals(request.getNumeroGrupo()) &&
+                grupoRepository.existsByTurma_TurmaIdAndNumeroGrupo(request.getTurmaId(), request.getNumeroGrupo())) {
+            throw new DuplicateResourceException("Já existe grupo com número " + request.getNumeroGrupo() + " nesta turma");
+        }
+
+        grupo.setTurma(turma);
+        grupo.setNumeroGrupo(request.getNumeroGrupo());
+        grupo.setNomeGrupo(request.getNomeGrupo());
+
+        Grupo updated = grupoRepository.save(grupo);
+        log.info("Grupo atualizado: {}", updated.getGrupoId());
+
+        return toResponseDTO(updated);
+    }
+
+    @Transactional
+    public GrupoResponseDTO toggleAtivo(Integer id, Boolean ativo) {
+        log.info("Alterando status do grupo {}: ativo={}", id, ativo);
+        
+        Grupo grupo = grupoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Grupo não encontrado: " + id));
+
+        grupo.setAtivo(ativo);
+        Grupo updated = grupoRepository.save(grupo);
+        log.info("Status do grupo {} alterado para: {}", id, ativo);
+
+        return toResponseDTO(updated);
     }
 
     @Transactional
@@ -218,6 +267,16 @@ public class GrupoService {
     }
 
     private GrupoResponseDTO toResponseDTO(Grupo grupo) {
+        GrupoResponseDTO.TurmaSimplificadaDTO turmaDTO = null;
+        if (grupo.getTurma() != null) {
+            turmaDTO = GrupoResponseDTO.TurmaSimplificadaDTO.builder()
+                    .turmaId(grupo.getTurma().getTurmaId())
+                    .nomeTurma(grupo.getTurma().getNomeTurma())
+                    .ano(grupo.getTurma().getAno())
+                    .semestre(grupo.getTurma().getSemestre().name())
+                    .build();
+        }
+        
         return GrupoResponseDTO.builder()
                 .grupoId(grupo.getGrupoId())
                 .turmaId(grupo.getTurma().getTurmaId())
@@ -229,6 +288,7 @@ public class GrupoService {
                 .totalSegundoTurno(grupo.getTotalSegundoTurno())
                 .ultimaPosicao(grupo.getUltimaPosicao())
                 .ativo(grupo.getAtivo())
+                .turma(turmaDTO)
                 .createdAt(grupo.getCreatedAt())
                 .updatedAt(grupo.getUpdatedAt())
                 .build();

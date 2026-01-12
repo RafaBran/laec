@@ -1,91 +1,126 @@
 .cadastrar-aulas-page {
-  min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &.embedded {
+    padding: 0;
+  }
 
   .page-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     margin-bottom: 2rem;
 
-    .back-button {
-      font-size: 1.5rem;
-    }
-
     .header-content {
-      flex: 1;
-    }
-
-    .page-title {
-      font-size: 2rem;
-      color: #2c3e50;
-      margin: 0 0 0.5rem 0;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 1rem;
 
-      i {
-        color: #3b82f6;
+      .back-button {
+        color: #722f37;
+        
+        &:hover {
+          background: rgba(114, 47, 55, 0.1);
+        }
       }
-    }
 
-    .page-subtitle {
-      color: #64748b;
-      margin: 0;
-      font-size: 1rem;
+      .title-section {
+        .page-title {
+          font-size: 2rem;
+          color: #722f37;
+          margin: 0 0 0.5rem 0;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+
+          i {
+            font-size: 2.5rem;
+          }
+        }
+
+        .page-subtitle {
+          color: #666;
+          margin: 0;
+          font-size: 1rem;
+        }
+      }
     }
   }
 
   .form-container {
-    margin-bottom: 2rem;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    .form-card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    p-message {
+      display: block;
+      margin-bottom: 1.5rem;
+    }
 
-      .form-title {
-        font-size: 1.5rem;
-        color: #2c3e50;
-        margin: 0 0 1.5rem 0;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #e2e8f0;
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+    .aula-form {
+      .form-section {
         margin-bottom: 2rem;
 
-        .form-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
+        &:last-of-type {
+          margin-bottom: 0;
+        }
 
-          &.full-width {
-            grid-column: 1 / -1;
-          }
+        .section-title {
+          color: #722f37;
+          font-size: 1.25rem;
+          margin: 0 0 1.5rem 0;
+          padding-bottom: 0.75rem;
+          border-bottom: 2px solid #f0f0f0;
+        }
 
-          label {
-            font-weight: 600;
-            color: #475569;
-            font-size: 0.9rem;
-          }
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
 
-          input,
-          p-datepicker,
-          p-select {
-            width: 100%;
-          }
+          .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
 
-          ::ng-deep {
-            .p-inputtext,
-            .p-datepicker,
-            .p-select {
+            &.full-width {
+              grid-column: 1 / -1;
+            }
+
+            label {
+              font-weight: 600;
+              color: #333;
+              font-size: 0.95rem;
+            }
+
+            input,
+            textarea,
+            p-select,
+            p-datepicker {
               width: 100%;
+            }
+
+            textarea {
+              resize: vertical;
+              font-family: inherit;
+              padding: 0.75rem;
+              border: 1px solid #ced4da;
+              border-radius: 6px;
+
+              &:focus {
+                outline: none;
+                border-color: #722f37;
+                box-shadow: 0 0 0 0.2rem rgba(114, 47, 55, 0.25);
+              }
+
+              &.p-invalid {
+                border-color: #e24c4c;
+              }
+            }
+
+            small.p-error {
+              color: #e24c4c;
+              font-size: 0.875rem;
             }
           }
         }
@@ -95,97 +130,56 @@
         display: flex;
         justify-content: flex-end;
         gap: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid #e2e8f0;
-      }
-    }
-  }
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #f0f0f0;
 
-  .table-container {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    .table-title {
-      font-size: 1.5rem;
-      color: #2c3e50;
-      margin: 0 0 1.5rem 0;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid #e2e8f0;
-    }
-
-    ::ng-deep {
-      .p-datatable {
-        .p-datatable-header {
-          background: #f8fafc;
-          border: none;
-          padding: 1rem;
-        }
-
-        .p-datatable-thead > tr > th {
-          background: #3b82f6;
-          color: white;
-          font-weight: 600;
-          border: none;
-          padding: 1rem;
-        }
-
-        .p-datatable-tbody > tr {
-          transition: all 0.2s;
-
-          &:hover {
-            background: #f1f5f9;
-          }
-
-          > td {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-
-            .p-button {
-              margin: 0 0.25rem;
-            }
-          }
-        }
-
-        .empty-message {
-          text-align: center;
-          padding: 3rem !important;
-          color: #94a3b8;
-
-          i {
-            font-size: 3rem;
-            display: block;
-            margin-bottom: 1rem;
-          }
-
-          p {
-            margin: 0;
-            font-size: 1.1rem;
-          }
+        button {
+          min-width: 150px;
         }
       }
     }
   }
-}
 
-@media (max-width: 768px) {
-  .cadastrar-aulas-page {
+  @media (max-width: 768px) {
     padding: 1rem;
 
     .page-header {
-      .page-title {
-        font-size: 1.5rem;
+      .header-content {
+        .title-section {
+          .page-title {
+            font-size: 1.5rem;
+
+            i {
+              font-size: 2rem;
+            }
+          }
+
+          .page-subtitle {
+            font-size: 0.875rem;
+          }
+        }
       }
     }
 
-    .form-container .form-card,
-    .table-container {
-      padding: 1rem;
-    }
+    .form-container {
+      padding: 1.5rem;
 
-    .form-grid {
-      grid-template-columns: 1fr !important;
+      .aula-form {
+        .form-section {
+          .form-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .form-actions {
+          flex-direction: column;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
     }
   }
 }
